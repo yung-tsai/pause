@@ -33,7 +33,12 @@
     * { box-sizing: border-box; touch-action: none; user-select: none; -webkit-user-select: none; }
 
     body {
-        background-color: #B0B0B0;
+        background-image: url('https://512pixels.net/wp-content/uploads/2025/06/15-Sequoia-Dark-thumbnail.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -44,6 +49,19 @@
         overflow: auto;
         font-family: var(--font-tech);
     }
+    
+    /* Blur overlay for background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: inherit;
+        filter: blur(20px);
+        z-index: -1;
+    }
 
     
     #device-chassis {
@@ -53,9 +71,10 @@
         border-radius: 24px;
         position: relative;
         box-shadow: 
-            25px 25px 50px rgba(0,0,0,0.15),
-            -10px -10px 30px rgba(255,255,255,0.8),
-            inset 0 0 0 1px rgba(255,255,255,0.2);
+            0 30px 80px rgba(0,0,0,0.4),
+            0 15px 40px rgba(0,0,0,0.3),
+            0 5px 15px rgba(0,0,0,0.2),
+            inset 0 -2px 10px rgba(0,0,0,0.05);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -89,7 +108,7 @@
         .lcd-bezel {
             flex-shrink: 0;
             margin-bottom: 20px !important;
-            margin-top: 0; /* Remove extra top margin */
+            margin-top: 10px; /* Add breathing room at top */
             height: clamp(200px, 32vh, 260px); /* Reduced from 220px to fit better */
             width: 90%; /* Add side padding by constraining width */
         }
@@ -400,6 +419,7 @@
             inset 1px 1px 1px rgba(255,255,255,0.5);
         transition: transform 0.1s;
         position: relative;
+        transform-origin: center center;
     }
     
     .knob-button:active {
@@ -414,7 +434,7 @@
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        padding: 0 24px 0 0; /* No left padding so text aligns with list, right padding for icon */
+        padding: 0 0 0 0; /* No padding - text and icon align with content edges */
     }
 
     .ui-middle {
@@ -478,36 +498,80 @@
     
     .wave-container {
         display: flex; /* Show the header icon animation */
-        gap: 3px;
+        gap: 2px;
         align-items: center;
         height: 16px;
         opacity: 1;
     }
     .bar {
-        width: 3px;
-        height: 40%;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 2px;
-        transition: background 0.3s, height 0.15s ease-out;
+        width: 2px;
+        height: 30%;
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 1px;
+        transition: background 0.3s;
     }
     .wave-container.playing .bar {
         background: #000;
-        animation: equalizer 0.8s ease-in-out infinite;
     }
-    @keyframes equalizer {
-        0%, 100% { height: 20%; }
-        50% { height: 80%; }
+    
+    /* Individual bar animations with different timings */
+    .wave-container.playing .bar:nth-child(1) {
+        animation: equalizer1 1.1s ease-in-out infinite;
     }
-    .bar:nth-child(1) { animation-delay: 0s; }
-    .bar:nth-child(2) { animation-delay: 0.1s; }
-    .bar:nth-child(3) { animation-delay: 0.2s; }
-    .bar:nth-child(4) { animation-delay: 0.15s; }
-    .bar:nth-child(5) { animation-delay: 0.05s; }
+    .wave-container.playing .bar:nth-child(2) {
+        animation: equalizer2 1.3s ease-in-out infinite;
+    }
+    .wave-container.playing .bar:nth-child(3) {
+        animation: equalizer3 0.9s ease-in-out infinite;
+    }
+    .wave-container.playing .bar:nth-child(4) {
+        animation: equalizer4 1.2s ease-in-out infinite;
+    }
+    .wave-container.playing .bar:nth-child(5) {
+        animation: equalizer5 1.0s ease-in-out infinite;
+    }
+    
+    @keyframes equalizer1 {
+        0%, 100% { height: 30%; opacity: 0.6; }
+        50% { height: 85%; opacity: 1; }
+    }
+    @keyframes equalizer2 {
+        0%, 100% { height: 40%; opacity: 0.7; }
+        50% { height: 90%; opacity: 1; }
+    }
+    @keyframes equalizer3 {
+        0%, 100% { height: 35%; opacity: 0.65; }
+        50% { height: 75%; opacity: 1; }
+    }
+    @keyframes equalizer4 {
+        0%, 100% { height: 45%; opacity: 0.7; }
+        50% { height: 80%; opacity: 1; }
+    }
+    @keyframes equalizer5 {
+        0%, 100% { height: 30%; opacity: 0.6; }
+        50% { height: 88%; opacity: 1; }
+    }
 
     /* Animated gradient for 2004 backgrounds */
     @keyframes gradientShift {
+        0% { background-position: 0% 0%; }
+        50% { background-position: 0% 100%; }
+        100% { background-position: 0% 0%; }
+    }
+
+    @keyframes auroraDrift {
         0% { background-position: 0% 50%; }
+        25% { background-position: 50% 75%; }
         50% { background-position: 100% 50%; }
+        75% { background-position: 50% 25%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes sunriseDrift {
+        0% { background-position: 0% 50%; }
+        25% { background-position: 75% 50%; }
+        50% { background-position: 100% 50%; }
+        75% { background-position: 25% 50%; }
         100% { background-position: 0% 50%; }
     }
 
@@ -547,72 +611,70 @@
         margin: 0 auto;
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        align-items: center;
-        text-align: center;
+        gap: 20px;
+        text-align: left;
     }
 
-    .install-banner-icon {
-        font-size: 32px;
+    .install-banner-heading {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: white;
     }
 
-    .install-banner-text {
-        flex: 1;
-    }
-
-    .install-banner-title {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        line-height: 1.3;
-    }
-
-    .install-banner-instruction {
-        font-size: 14px;
-        opacity: 0.9;
-        line-height: 1.4;
-    }
-
-    .install-banner-buttons {
+    .install-banner-body {
         display: flex;
-        gap: 12px;
-        margin-top: 4px;
+        flex-direction: column;
+        gap: 16px;
     }
 
-    .install-banner-btn {
+    .install-banner-steps {
+        margin: 0;
+        padding-left: 24px;
+        list-style-type: decimal;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .install-banner-steps li {
+        font-size: 15px;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.95);
+        display: list-item;
+        padding-left: 8px;
+    }
+
+    .install-banner-steps li::marker {
+        color: rgba(255, 255, 255, 0.95);
+        font-weight: 600;
+    }
+
+    .share-icon {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 2px;
+        color: white;
+    }
+
+    .install-banner-btn-full {
+        width: 100%;
         background: white;
         color: black;
         border: none;
-        padding: 10px 24px;
-        border-radius: 8px;
-        font-size: 15px;
+        padding: 14px;
+        border-radius: 12px;
+        font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        transition: transform 0.1s;
+        transition: transform 0.1s, opacity 0.2s;
     }
 
-    .install-banner-btn:active {
-        transform: scale(0.95);
+    .install-banner-btn-full:active {
+        transform: scale(0.98);
+        opacity: 0.9;
     }
 
-    .install-banner-close {
-        background: transparent;
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
-        font-size: 24px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.2s;
-    }
-
-    .install-banner-close:active {
-        background: rgba(255, 255, 255, 0.1);
-    }
 
 </style>
 </head>
@@ -665,15 +727,22 @@
         <!-- Install Banner (mobile only, first visit) -->
         <div id="install-banner" style="display: none;">
             <div class="install-banner-content">
-                <div class="install-banner-icon">📱</div>
-                <div class="install-banner-text">
-                    <div class="install-banner-title">Add to Home Screen to use Pause fullscreen</div>
-                    <div class="install-banner-instruction">Tap <span style="font-size: 18px;">📤</span> → "Add to Home Screen"</div>
+                <div class="install-banner-heading">Get the best experience by following these instructions:</div>
+                <div class="install-banner-body">
+                    <ol class="install-banner-steps">
+                        <li>
+                            <span>Look for the Share icon </span>
+                            <svg class="share-icon" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 0.5L8 13.5M8 0.5L11.5 4M8 0.5L4.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1.5 8V17C1.5 18.1046 2.39543 19 3.5 19H12.5C13.6046 19 14.5 18.1046 14.5 17V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            <span> and tap it</span>
+                        </li>
+                        <li>Select "Add to Home Screen"</li>
+                        <li>Open Pause from your home screen anytime</li>
+                    </ol>
                 </div>
-                <div class="install-banner-buttons">
-                    <button id="install-banner-dismiss" class="install-banner-btn">Got it</button>
-                    <button id="install-banner-close" class="install-banner-close">×</button>
-                </div>
+                <button id="install-banner-dismiss" class="install-banner-btn-full">Got it</button>
             </div>
         </div>
     </div>
@@ -691,21 +760,21 @@
     }
 
     
-    const MODES = ['Session', 'Length', 'Sound', 'Settings'];
-    const SOUNDS = ['Silence', 'Forest', 'Nature', 'Stream', 'Rain'];
+    const MODES = ['Meditate', 'Color', 'Duration', 'Sounds', 'Theme'];
+    const SOUNDS = ['Silence', 'Forest', 'Nature', 'Rain', 'Stream', 'Winter'];
     const TIMER_PRESETS = [5, 10, 15, 20];
     const timerPresets = [5, 10, 15, 20];
     const soundOptions = ['Silence', 'Rain', 'Ocean', 'Forest', 'Wind'];
     // All available colors (can be used with any chassis style)
     const COLORS = [
-        { name: 'Arctic', bg: '#C5E3F6', text: '#0a2540' },
         { name: 'Amber', bg: '#FF9F1C', text: '#1a0f00' },
+        { name: 'Arctic', bg: '#C5E3F6', text: '#0a2540' },
         { name: 'Dark', bg: '#2c2c2c', text: '#fff' },
-        { name: 'Sunrise', bg: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%)', text: '#1a0f00' },
-        { name: 'Dusk', bg: '#FFA07A', text: '#2c1810' }
+        { name: 'Aurora', bg: 'radial-gradient(circle at 30% 40%, #00C9FF 0%, rgba(0,201,255,0.3) 30%, transparent 60%), radial-gradient(circle at 70% 60%, #92FE9D 0%, rgba(146,254,157,0.3) 30%, transparent 60%), radial-gradient(circle at 50% 80%, #00F260 0%, rgba(0,242,96,0.3) 30%, transparent 60%), linear-gradient(135deg, #00C9FF 0%, #3DD5F3 25%, #92FE9D 50%, #5FE597 75%, #00F260 100%)', text: '#0a2540' },
+        { name: 'Sunrise', bg: 'radial-gradient(circle at 35% 45%, #FF6B35 0%, rgba(255,107,53,0.4) 30%, transparent 60%), radial-gradient(circle at 65% 55%, #FFB84D 0%, rgba(255,184,77,0.4) 30%, transparent 60%), radial-gradient(circle at 50% 75%, #FDC830 0%, rgba(253,200,48,0.4) 30%, transparent 60%), linear-gradient(135deg, #FF6B35 0%, #FFB84D 33%, #F7931E 50%, #FFC857 66%, #FDC830 100%)', text: '#1a0f00' }
     ];
     
-    const STYLE_YEARS = ['2001', '2004'];
+    const STYLE_YEARS = ['Classic', 'Midnight', 'Modern', 'Rose Gold'];
     
     const ANIMATION_OPTIONS = ['On', 'Off'];
     
@@ -717,9 +786,9 @@
         selectedSound: 'Silence',
         isPlaying: false,
         volume: 50,
-        colorIndex: 0, // Index into COLORS array
+        colorIndex: 1, // Index into COLORS array - defaults to Arctic
         tempColorIndex: 0, // Temporary storage for color during animation selection
-        styleYear: '2001', // '2001' or '2004' - controls chassis aesthetic
+        styleYear: 'Classic', // 'Classic', 'Modern', 'Rose Gold', or 'Midnight' - controls chassis aesthetic
         settingsView: 'main',
         animationEnabled: false,
         soundPresetIndex: 0,
@@ -735,8 +804,91 @@
 
     // Audio element for meditation sounds
     let audioElement = new Audio();
+    
+    // Web Audio API for UI sounds
+    let audioContext = null;
+    
+    function initAudioContext() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+    
+    function playDialBeep() {
+        initAudioContext();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Digital beep: 800Hz, short duration
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        
+        // Medium volume (40%)
+        gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.05);
+    }
+    
+    function playButtonClick() {
+        initAudioContext();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Digital click: 1200Hz -> 600Hz sweep
+        oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.08);
+        oscillator.type = 'sine';
+        
+        // Medium volume (40%)
+        gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.08);
+    }
+    
+    function playEndChime() {
+        initAudioContext();
+        const now = audioContext.currentTime;
+        
+        // Pleasant 3-note ascending chime
+        const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5 (major chord)
+        const noteDuration = 0.4;
+        
+        frequencies.forEach((freq, i) => {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = freq;
+            oscillator.type = 'sine';
+            
+            const startTime = now + (i * 0.3); // Stagger notes
+            
+            // Gentle fade in and out
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.linearRampToValueAtTime(0.15, startTime + 0.05); // Quiet, gentle
+            gainNode.gain.linearRampToValueAtTime(0.15, startTime + noteDuration - 0.1);
+            gainNode.gain.linearRampToValueAtTime(0, startTime + noteDuration);
+            
+            oscillator.start(startTime);
+            oscillator.stop(startTime + noteDuration);
+        });
+    }
+    
     audioElement.loop = true;
     audioElement.volume = 0.5;
+    audioElement.preload = 'auto'; // Preload to minimize gaps
 
     function playSound(soundName) {
         if (soundName === 'Silence' || !soundName) {
@@ -745,13 +897,24 @@
             return;
         }
         
-        // Map sound name to file (lowercase)
-        const soundFile = `${soundName.toLowerCase()}.mp3`;
+        // Custom sound file mappings
+        const soundFileMap = {
+            'Winter': 'winter-wind.mp3'
+        };
         
-        // Only reload if it's a different sound
-        if (audioElement.src !== soundFile && !audioElement.src.endsWith(soundFile)) {
+        // Map sound name to file (use custom mapping or default to lowercase)
+        const soundFile = soundFileMap[soundName] || `${soundName.toLowerCase()}.mp3`;
+        
+        // Check if we need to switch sounds
+        const currentFileName = audioElement.src.split('/').pop();
+        if (currentFileName !== soundFile) {
+            // Different sound - stop current and load new one
+            audioElement.pause();
+            audioElement.currentTime = 0;
             audioElement.src = soundFile;
+            audioElement.load(); // Force reload
         }
+        // If same sound, just resume playback (don't reload)
         
         audioElement.play().catch(err => {
             console.log('Audio play failed:', err);
@@ -812,6 +975,15 @@
                     state.countdownPaused = false;
                     state.remainingSeconds = 0;
                     state.isPlaying = false;
+                    
+                    // Play end chime for Silence mode
+                    if (state.selectedSound === 'Silence' || !state.selectedSound) {
+                        // Wait 4 seconds before playing chime
+                        setTimeout(() => {
+                            playEndChime();
+                        }, 4000);
+                    }
+                    
                     stopSound();
                 }
                 
@@ -863,12 +1035,17 @@
         if (currentTheme.bg.includes('gradient')) {
             screen.style.background = currentTheme.bg;
             
-            // Apply animation if enabled and color supports it (only Sunrise now)
+            // Apply animation if enabled and color supports it (Sunrise or Aurora)
             const currentColorName = currentTheme.name;
-            const supportsAnimation = currentColorName === 'Sunrise';
+            const supportsAnimation = currentColorName === 'Sunrise' || currentColorName === 'Aurora';
             if (state.animationEnabled && supportsAnimation) {
-                screen.style.backgroundSize = '200% 200%';
-                screen.style.animation = 'gradientShift 8s ease infinite';
+                // Use smooth drifting animations with enlarged background
+                screen.style.backgroundSize = '300% 300%';
+                if (currentColorName === 'Aurora') {
+                    screen.style.animation = 'auroraDrift 20s ease-in-out infinite';
+                } else if (currentColorName === 'Sunrise') {
+                    screen.style.animation = 'sunriseDrift 20s ease-in-out infinite';
+                }
             }
         } else {
             screen.style.backgroundColor = currentTheme.bg;
@@ -896,8 +1073,6 @@
             showTimerCountdown();
         } else if (state.currentView === 'SOUND') {
             showSound();
-        } else if (state.currentView === 'SETTINGS') {
-            showSettings();
         } else if (state.currentView === 'SETTINGS_THEME') {
             showSettingsTheme();
         } else if (state.currentView === 'SETTINGS_COLOR') {
@@ -911,58 +1086,94 @@
         if(state.isPlaying) visualizer.classList.add('playing');
         else visualizer.classList.remove('playing');
         
-        // Apply 2004 aesthetic changes (flat dial, no LCD border, chassis color)
+        // Apply theme aesthetic changes
         const lcdBezel = document.querySelector('.lcd-bezel');
         const chassis = document.getElementById('device-chassis');
+        const knobCap = knob.querySelector('.knob-cap');
         
-        if (state.styleYear === '2004') {
-            // Change chassis to lighter gray
+        if (state.styleYear === 'Modern') {
+            // Modern (formerly 2004) - Light, minimal, flat
             chassis.style.background = '#e4e4e4';
-            
-            // Flat, minimal dial for 2004 - using CSS variables
             knob.style.background = 'var(--knob-base)';
             knob.style.boxShadow = '0 0 0 1px #d0d0d0, 0 1px 3px rgba(0,0,0,0.1)';
-            
-            // Flat knob cap - using CSS variable
-            const knobCap = knob.querySelector('.knob-cap');
             knobCap.style.background = 'var(--knob-cap)';
             knobCap.style.boxShadow = '0 0 0 0.5px #c0c0c0, 0 1px 2px rgba(0,0,0,0.08)';
-            
-            // Center button matches chassis color for 2004
             knobBtn.style.background = '#e4e4e4';
             knobBtn.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(255,255,255,0.3)';
-            
-            // Remove LCD bezel depth
             lcdBezel.style.background = '#f5f5f5';
             lcdBezel.style.boxShadow = 'none';
             lcdBezel.style.padding = '2px';
-            
-            // Remove LCD screen border
             screen.style.boxShadow = 'none';
-        } else {
-            // Classic gray chassis for 2001
-            chassis.style.background = '#C4C4C4';
             
-            // Dimensional dial for 2001 (donut with depth) - less white
+            // Reset speaker grille to default
+            const speakerHolesModern = document.querySelectorAll('.speaker-hole');
+            speakerHolesModern.forEach(hole => {
+                hole.style.background = '#333';
+                hole.style.boxShadow = 'inset 1px 1px 1px rgba(0,0,0,0.8)';
+            });
+            
+        } else if (state.styleYear === 'Rose Gold') {
+            // Rose Gold - Warm, elegant, soft pink-gold
+            chassis.style.background = '#E6C3B8';
+            knob.style.background = 'radial-gradient(circle at 35% 35%, #F0D5CC, #E6C3B8 60%, #DDB5A9)';
+            knob.style.boxShadow = '0 0 0 1px rgba(139,111,99,0.3), inset 2px 2px 3px rgba(255,255,255,0.7), inset -3px -3px 4px rgba(139,111,99,0.15), 0 2px 4px rgba(0,0,0,0.1)';
+            knobCap.style.background = 'radial-gradient(circle at 35% 35%, #E6C3B8, #DDB5A9 60%, #D4A89D)';
+            knobCap.style.boxShadow = '0 0 0 0.5px rgba(139,111,99,0.3), inset -2px -2px 3px rgba(139,111,99,0.2), inset 1px 1px 2px rgba(255,255,255,0.6)';
+            knobBtn.style.background = 'radial-gradient(circle at 40% 40%, #F5E0D8, #E6C3B8 70%, #DDB5A9)';
+            knobBtn.style.boxShadow = '0 1px 2px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(139,111,99,0.08), inset 1px 1px 1px rgba(255,255,255,0.5)';
+            lcdBezel.style.background = 'linear-gradient(145deg, #8B6F63, #7A5D52)';
+            lcdBezel.style.boxShadow = 'inset 3px 3px 6px rgba(0,0,0,0.3), inset -2px -2px 4px rgba(255,255,255,0.1), 0 1px 2px rgba(255,255,255,0.15), inset -3px -3px 8px rgba(255,255,255,0.15)';
+            lcdBezel.style.padding = '4px';
+            screen.style.boxShadow = 'inset 2px 2px 4px rgba(0,0,0,0.15), inset -1px -1px 2px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.2)';
+            
+            // Reset speaker grille to default
+            const speakerHolesRose = document.querySelectorAll('.speaker-hole');
+            speakerHolesRose.forEach(hole => {
+                hole.style.background = '#333';
+                hole.style.boxShadow = 'inset 1px 1px 1px rgba(0,0,0,0.8)';
+            });
+            
+        } else if (state.styleYear === 'Midnight') {
+            // Midnight - Dark mode, sleek black
+            chassis.style.background = '#1C1C1E';
+            knob.style.background = 'radial-gradient(circle at 35% 35%, #2C2C2E, #252527 60%, #1E1E20)';
+            knob.style.boxShadow = '0 0 0 1px rgba(0,0,0,0.8), inset 2px 2px 3px rgba(255,255,255,0.1), inset -3px -3px 4px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.3)';
+            knobCap.style.background = 'radial-gradient(circle at 35% 35%, #252527, #1E1E20 60%, #181819)';
+            knobCap.style.boxShadow = '0 0 0 0.5px rgba(0,0,0,0.5), inset -2px -2px 3px rgba(0,0,0,0.4), inset 1px 1px 2px rgba(255,255,255,0.1)';
+            knobBtn.style.background = 'radial-gradient(circle at 40% 40%, #38383A, #2C2C2E 70%, #252527)';
+            knobBtn.style.boxShadow = '0 1px 2px rgba(255,255,255,0.1), inset -1px -1px 2px rgba(0,0,0,0.2), inset 1px 1px 1px rgba(255,255,255,0.08)';
+            lcdBezel.style.background = 'linear-gradient(145deg, #0a0a0a, #000000)';
+            lcdBezel.style.boxShadow = 'inset 3px 3px 6px rgba(0,0,0,0.8), inset -2px -2px 4px rgba(255,255,255,0.03), 0 1px 2px rgba(255,255,255,0.05), inset -3px -3px 8px rgba(255,255,255,0.05)';
+            lcdBezel.style.padding = '4px';
+            screen.style.boxShadow = 'inset 2px 2px 4px rgba(0,0,0,0.3), inset -1px -1px 2px rgba(255,255,255,0.05), 0 0 0 0.5px rgba(0,0,0,0.5)';
+            
+            // Make speaker grille visible on dark background
+            const speakerHoles = document.querySelectorAll('.speaker-hole');
+            speakerHoles.forEach(hole => {
+                hole.style.background = '#4A4A4C'; // Lighter gray for visibility
+                hole.style.boxShadow = 'inset 1px 1px 1px rgba(0,0,0,0.3)';
+            });
+            
+        } else {
+            // Classic (formerly 2001) - Gray, dimensional, traditional iPod
+            chassis.style.background = '#C4C4C4';
             knob.style.background = 'radial-gradient(circle at 35% 35%, #ececec, #e0e0e0 60%, #d8d8d8)';
             knob.style.boxShadow = '0 0 0 1px rgba(0,0,0,0.3), inset 2px 2px 3px rgba(255,255,255,0.9), inset -3px -3px 4px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1)';
-            
-            // Recessed inner well - darker gray
-            const knobCap = knob.querySelector('.knob-cap');
             knobCap.style.background = 'radial-gradient(circle at 35% 35%, #dcdcdc, #d0d0d0 60%, #c8c8c8)';
             knobCap.style.boxShadow = '0 0 0 0.5px rgba(0,0,0,0.25), inset -2px -2px 3px rgba(0,0,0,0.2), inset 1px 1px 2px rgba(255,255,255,0.6)';
-            
-            // Center button in well - medium gray
             knobBtn.style.background = 'radial-gradient(circle at 40% 40%, #e6e6e6, #dadada 70%, #d2d2d2)';
             knobBtn.style.boxShadow = '0 1px 2px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.08), inset 1px 1px 1px rgba(255,255,255,0.5)';
-            
-            // LCD bezel - lighter, not so dark
             lcdBezel.style.background = 'linear-gradient(145deg, #3a3a3a, #2a2a2a)';
             lcdBezel.style.boxShadow = 'inset 3px 3px 6px rgba(0,0,0,0.5), inset -2px -2px 4px rgba(255,255,255,0.08), 0 1px 2px rgba(255,255,255,0.15), inset -3px -3px 8px rgba(255,255,255,0.2)';
             lcdBezel.style.padding = '4px';
-            
-            // Restore LCD screen border for 2001
             screen.style.boxShadow = 'inset 2px 2px 4px rgba(0,0,0,0.15), inset -1px -1px 2px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.2)';
+            
+            // Reset speaker grille to default
+            const speakerHoles = document.querySelectorAll('.speaker-hole');
+            speakerHoles.forEach(hole => {
+                hole.style.background = '#333';
+                hole.style.boxShadow = 'inset 1px 1px 1px rgba(0,0,0,0.8)';
+            });
         }
     }
 
@@ -981,11 +1192,11 @@
         if (state.countdownActive) {
             const mins = Math.floor(state.remainingSeconds / 60);
             const secs = state.remainingSeconds % 60;
-            mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${mins}:${secs.toString().padStart(2, '0')}</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7;">${soundName}${state.countdownPaused ? ' • PAUSED' : ''}</div>`;
+            mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${mins}:${secs.toString().padStart(2, '0')}</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7; letter-spacing: 0.5px;">${soundName}${state.countdownPaused ? ' • PAUSED' : ''}</div>`;
         } else {
             // Otherwise show the preset timer
             const minutes = Math.floor(state.timer);
-            mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${minutes}:00</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7;">${soundName}</div>`;
+            mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${minutes}:00</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7; letter-spacing: 0.5px;">${soundName}</div>`;
         }
     }
 
@@ -1053,7 +1264,7 @@
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
                 border-bottom: ${isLast ? 'none' : '1px solid rgba(0,0,0,0.1)'};
                 transition: all 0.1s ease;
-            ">${preset} Minutes</div>`;
+            ">${preset} mins</div>`;
         }).join('');
         
         mainValue.innerHTML = presetHTML;
@@ -1081,7 +1292,7 @@
         const secs = state.remainingSeconds % 60;
         const soundName = state.selectedSound || 'Silence';
         
-        mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${mins}:${secs.toString().padStart(2, '0')}</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7;">${soundName}${state.countdownPaused ? ' • PAUSED' : ''}</div>`;
+        mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${mins}:${secs.toString().padStart(2, '0')}</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7; letter-spacing: 0.5px;">${soundName}${state.countdownPaused ? ' • PAUSED' : ''}</div>`;
         mainValue.style.fontSize = '';
         mainValue.style.fontWeight = '';
         mainValue.style.letterSpacing = '';
@@ -1147,7 +1358,7 @@
         const middleContainer = document.querySelector('.ui-middle');
         middleContainer.style.justifyContent = 'flex-start';
         
-        const settingsItems = ['Theme', 'Color'];
+        const settingsItems = ['Color', 'Theme'];
         const settingsHTML = settingsItems.map((item, i) => {
             const isSelected = i === state.setupPresetIndex;
             const isLast = i === settingsItems.length - 1;
@@ -1189,8 +1400,7 @@
         const middleContainer = document.querySelector('.ui-middle');
         middleContainer.style.justifyContent = 'flex-start';
         
-        const themeYears = ['2001', '2004'];
-        const themeHTML = themeYears.map((year, i) => {
+        const themeHTML = STYLE_YEARS.map((year, i) => {
             const isSelected = i === state.setupPresetIndex;
             return `<div style="
                 height: 40px;
@@ -1514,7 +1724,12 @@
         
         currentRotation += delta;
         const knobCap = knob.querySelector('.knob-cap');
+        
+        // Rotate the cap
         knobCap.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg)`;
+        
+        // Counter-rotate the button to keep lighting fixed - force with !important via setProperty
+        knobBtn.style.setProperty('transform', `rotate(${-currentRotation}deg)`, 'important');
 
         if (Math.abs(currentRotation - lastRotationCheckpoint) > sensitivity) {
             const steps = Math.floor((currentRotation - lastRotationCheckpoint) / sensitivity);
@@ -1527,6 +1742,9 @@
     function handleInput(steps) {
         if(steps === 0) return;
         const direction = steps > 0 ? 1 : -1;
+        
+        // Play dial beep sound on menu item change
+        playDialBeep();
 
         if (state.currentView === 'SESSION') {
             // Allow changing timer duration on home screen when countdown is NOT active
@@ -1551,16 +1769,11 @@
             state.soundPresetIndex += direction;
             if(state.soundPresetIndex < 0) state.soundPresetIndex = SOUNDS.length - 1;
             if(state.soundPresetIndex >= SOUNDS.length) state.soundPresetIndex = 0;
-        } else if (state.currentView === 'SETTINGS') {
-            // Theme, Color (2 items)
-            state.setupPresetIndex += direction;
-            if(state.setupPresetIndex < 0) state.setupPresetIndex = 1;
-            if(state.setupPresetIndex > 1) state.setupPresetIndex = 0;
         } else if (state.currentView === 'SETTINGS_THEME') {
-            // 2001, 2004 (2 items)
+            // Classic, Modern, Rose Gold, Midnight (4 items)
             state.setupPresetIndex += direction;
-            if(state.setupPresetIndex < 0) state.setupPresetIndex = 1;
-            if(state.setupPresetIndex > 1) state.setupPresetIndex = 0;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = 3;
+            if(state.setupPresetIndex > 3) state.setupPresetIndex = 0;
         } else if (state.currentView === 'SETTINGS_COLOR') {
             // All 6 colors
             state.setupPresetIndex += direction;
@@ -1669,7 +1882,7 @@
             
             // Check if this was a tap (small movement, quick release)
             if (distance < 10 && timeDiff < 300) {
-                // Check if tap was in top area - return to MENU
+                // Check if tap was in top area - return to MENU (don't stop timer/sound)
                 if (pointerDownInTopArea) {
                     state.currentView = 'MENU';
                     updateDisplay();
@@ -1697,20 +1910,15 @@
                     // Left side tap on Sound list - return to MENU
                     state.currentView = 'MENU';
                     updateDisplay();
-                } else if (state.currentView === 'SETTINGS' && tapX < centerX) {
-                    // Left side tap on Settings - return to MENU
-                    state.currentView = 'MENU';
-                    state.setupPresetIndex = 0;
-                    updateDisplay();
                 } else if (state.currentView === 'SETTINGS_THEME' && tapX < centerX) {
-                    // Left side tap on Theme - return to SETTINGS
-                    state.currentView = 'SETTINGS';
-                    state.setupPresetIndex = 0;
+                    // Left side tap on Theme - return to MENU (Theme is now menu index 4)
+                    state.currentView = 'MENU';
+                    state.modeIndex = 4;
                     updateDisplay();
                 } else if (state.currentView === 'SETTINGS_COLOR' && tapX < centerX) {
-                    // Left side tap on Color - return to SETTINGS
-                    state.currentView = 'SETTINGS';
-                    state.setupPresetIndex = 1;
+                    // Left side tap on Color - return to MENU (Color is now menu index 1)
+                    state.currentView = 'MENU';
+                    state.modeIndex = 1;
                     updateDisplay();
                 } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION' && tapX < centerX) {
                     // Left side tap on Color Animation - return to SETTINGS_COLOR
@@ -1718,9 +1926,9 @@
                     state.setupPresetIndex = state.tempColorIndex;
                     updateDisplay();
                 } else if (state.currentView === 'SETTINGS_ANIMATION' && tapX < centerX) {
-                    // Left side tap on Animation - return to SETTINGS
+                    // Left side tap on Animation - return to SETTINGS (Color is index 0)
                     state.currentView = 'SETTINGS';
-                    state.setupPresetIndex = 1;
+                    state.setupPresetIndex = 0;
                     updateDisplay();
                 }
             }
@@ -1738,13 +1946,16 @@
     knobBtn.addEventListener('pointerdown', (e) => {
         e.stopPropagation();
         e.preventDefault();
-        knobBtn.style.transform = "scale(0.92)";
+        knobBtn.style.setProperty('transform', `rotate(${-currentRotation}deg) scale(0.92)`, 'important');
     });
 
     knobBtn.addEventListener('pointerup', (e) => {
         e.stopPropagation();
         e.preventDefault();
-        knobBtn.style.transform = "scale(1)";
+        knobBtn.style.setProperty('transform', `rotate(${-currentRotation}deg) scale(1)`, 'important');
+        
+        // Play button click sound
+        playButtonClick();
         
         // Quick tap - execute action based on current view
         if (state.currentView === 'SESSION') {
@@ -1752,7 +1963,12 @@
             if (state.countdownActive) {
                 // Resume existing countdown
                 state.currentView = 'TIMER_COUNTDOWN';
+                state.countdownPaused = false;
                 state.isPlaying = state.selectedSound && state.selectedSound !== 'Silence';
+                // Play the currently selected sound (might have changed while paused)
+                if (state.isPlaying) {
+                    playSound(state.selectedSound);
+                }
             } else {
                 // Start new countdown
                 state.timer = state.timer;
@@ -1763,22 +1979,36 @@
         } else if (state.currentView === 'MENU') {
             // Select the highlighted mode
             if (state.modeIndex === 0) {
-                // Going to SESSION - don't reset countdown if active
-                state.currentView = 'SESSION';
+                // Meditate - Check if there's an active countdown
+                if (state.countdownActive) {
+                    // Return to the active countdown
+                    state.currentView = 'TIMER_COUNTDOWN';
+                } else {
+                    // No active countdown, go to SESSION (home screen)
+                    state.currentView = 'SESSION';
+                }
             } else if (state.modeIndex === 1) {
-                state.currentView = 'TIMER_PRESET';
+                // Color
+                state.currentView = 'SETTINGS_COLOR';
+                state.setupPresetIndex = state.colorIndex;
             } else if (state.modeIndex === 2) {
-                state.currentView = 'SOUND';
+                // Duration
+                state.currentView = 'TIMER_PRESET';
             } else if (state.modeIndex === 3) {
-                state.currentView = 'SETTINGS';
-                state.setupPresetIndex = 0;
+                // Sounds
+                state.currentView = 'SOUND';
+            } else if (state.modeIndex === 4) {
+                // Theme
+                state.currentView = 'SETTINGS_THEME';
+                const themeIndex = STYLE_YEARS.indexOf(state.styleYear);
+                state.setupPresetIndex = themeIndex >= 0 ? themeIndex : 0;
             }
         } else if (state.currentView === 'TIMER_PRESET') {
             // Start countdown with selected preset
             state.timer = TIMER_PRESETS[state.timerPresetIndex];
             
-            // If a sound is selected (not SILENCE), start countdown with sound
-            if (state.selectedSound && state.selectedSound !== 'SILENCE') {
+            // If a sound is selected (not Silence), start countdown with sound
+            if (state.selectedSound && state.selectedSound !== 'Silence') {
                 state.currentView = 'TIMER_COUNTDOWN';
                 state.isPlaying = true;
                 startCountdown();
@@ -1796,11 +2026,8 @@
                 audioElement.pause();
             } else if (state.selectedSound && state.selectedSound !== 'Silence') {
                 state.isPlaying = true;
-                if (audioElement.src) {
-                    audioElement.play();
-                } else {
-                    playSound(state.selectedSound);
-                }
+                // Always call playSound to ensure correct sound plays (in case it changed while paused)
+                playSound(state.selectedSound);
             }
         } else if (state.currentView === 'SOUND') {
             // Select sound from list
@@ -1817,27 +2044,22 @@
                 }
             }
             
-            state.currentView = 'MENU';
-        } else if (state.currentView === 'SETTINGS') {
-            // Navigate into Theme or Color
-            if (state.setupPresetIndex === 0) {
-                // Theme
-                state.currentView = 'SETTINGS_THEME';
-                state.setupPresetIndex = state.styleYear === '2004' ? 1 : 0;
-            } else if (state.setupPresetIndex === 1) {
-                // Color
-                state.currentView = 'SETTINGS_COLOR';
-                state.setupPresetIndex = state.colorIndex;
+            // Return to appropriate view
+            if (state.countdownActive) {
+                // Return to countdown view if timer is running
+                state.currentView = 'TIMER_COUNTDOWN';
+            } else {
+                state.currentView = 'MENU';
             }
         } else if (state.currentView === 'SETTINGS_THEME') {
-            // Select style year (2001 or 2004)
-            state.styleYear = state.setupPresetIndex === 0 ? '2001' : '2004';
-            state.currentView = 'SETTINGS';
-            state.setupPresetIndex = 0;
+            // Select style (Classic, Midnight, Modern, or Rose Gold)
+            state.styleYear = STYLE_YEARS[state.setupPresetIndex];
+            state.currentView = 'MENU';
+            state.modeIndex = 4; // Return to Theme in menu
         } else if (state.currentView === 'SETTINGS_COLOR') {
             // Check if selected color supports animation
             const selectedColor = COLORS[state.setupPresetIndex];
-            const hasAnimation = selectedColor.name === 'Sunrise';
+            const hasAnimation = selectedColor.name === 'Sunrise' || selectedColor.name === 'Aurora';
             
             if (hasAnimation) {
                 // Go to animation submenu for this color
@@ -1848,20 +2070,20 @@
             } else {
                 // Confirm color selection (no animation for this color)
                 state.colorIndex = state.setupPresetIndex;
-                state.currentView = 'SETTINGS';
-                state.setupPresetIndex = 1; // Return to Color option
+                state.currentView = 'MENU';
+                state.modeIndex = 1; // Return to Color in menu
             }
         } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION') {
             // Confirm animation setting and apply color
             state.animationEnabled = state.setupPresetIndex === 0;
             state.colorIndex = state.tempColorIndex;
-            state.currentView = 'SETTINGS';
-            state.setupPresetIndex = 1; // Return to Color option
+            state.currentView = 'MENU';
+            state.modeIndex = 1; // Return to Color in menu
         } else if (state.currentView === 'SETTINGS_ANIMATION') {
             // Toggle animation on/off (old global animation handler - can be removed)
             state.animationEnabled = state.setupPresetIndex === 0;
             state.currentView = 'SETTINGS';
-            state.setupPresetIndex = 1; // Return to Color option
+            state.setupPresetIndex = 0; // Return to Color option (now index 0)
         }
         
         updateDisplay();
@@ -1896,16 +2118,11 @@
         }
     }
 
-    // Add event listeners for banner buttons
+    // Add event listener for banner button
     const dismissBtn = document.getElementById('install-banner-dismiss');
-    const closeBtn = document.getElementById('install-banner-close');
     
     if (dismissBtn) {
         dismissBtn.addEventListener('click', hideInstallBanner);
-    }
-    
-    if (closeBtn) {
-        closeBtn.addEventListener('click', hideInstallBanner);
     }
 
     // Show banner on load (if conditions met)
