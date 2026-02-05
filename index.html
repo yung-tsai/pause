@@ -1,0 +1,1795 @@
+<html lang="en" vid="0"><head vid="1">
+<meta charset="UTF-8" vid="2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" vid="3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#C4C4C4">
+<title vid="4">Omm Device</title>
+<style vid="5">
+    :root {
+        
+        --chassis-main: #C4C4C4;
+        --chassis-light: #D4D4D4;
+        --chassis-shadow: #9E9E9E;
+        
+        --knob-black: #181818;
+        --knob-highlight: #333333;
+        --knob-base: #d1d1d1;
+        --knob-cap: #e4e4e4;
+        
+        --accent-orange: #CC3614; 
+        --accent-orange-dim: #A1280D;
+        
+        --display-bg: #C5E3F6; 
+        --display-off: #2A2F25;
+        --display-text: #222222;
+        
+        --shadow-diffusion: 0px 20px 40px rgba(0,0,0,0.25);
+        --shadow-inset: inset 2px 2px 5px rgba(0,0,0,0.2), inset -2px -2px 5px rgba(255,255,255,0.4);
+        
+        --font-tech: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; touch-action: none; user-select: none; -webkit-user-select: none; }
+
+    body {
+        background-color: #B0B0B0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 20px;
+        overflow: auto;
+        font-family: var(--font-tech);
+    }
+
+    
+    #device-chassis {
+        width: 420px;
+        height: 840px;
+        background: var(--chassis-main);
+        border-radius: 24px;
+        position: relative;
+        box-shadow: 
+            25px 25px 50px rgba(0,0,0,0.15),
+            -10px -10px 30px rgba(255,255,255,0.8),
+            inset 0 0 0 1px rgba(255,255,255,0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 32px;
+        z-index: 1;
+        transform: translateZ(0) scale(0.85);
+        flex-shrink: 0;
+    }
+
+    /* Mobile/Tablet Responsive Styles */
+    @media (max-width: 768px) {
+        body {
+            background-color: var(--chassis-main);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #device-chassis {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh; /* Use dynamic viewport height for better mobile support */
+            background: var(--chassis-main);
+            border-radius: 0;
+            box-shadow: none;
+            padding: max(env(safe-area-inset-top), 24px) 20px max(env(safe-area-inset-bottom), 16px) 20px; /* Increased top padding */
+            transform: none;
+            justify-content: space-between; /* Space out LCD, grille, and dial */
+            align-items: center; /* Center everything horizontally */
+        }
+
+        .lcd-bezel {
+            flex-shrink: 0;
+            margin-bottom: 25px !important; /* Increased to push grille down */
+            margin-top: 8px; /* Add space above LCD */
+            height: clamp(220px, 35vh, 280px); /* Responsive height */
+            width: 90%; /* Add side padding by constraining width */
+        }
+
+        .speaker-array {
+            flex-shrink: 0;
+            margin-bottom: 16px !important;
+            width: 85%;
+            height: 32px;
+        }
+
+        .control-deck {
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-top: auto; /* Push dial to bottom */
+            padding-bottom: max(env(safe-area-inset-bottom), 10px);
+        }
+
+        .knob {
+            width: clamp(180px, 40vw, 240px);
+            height: clamp(180px, 40vw, 240px);
+        }
+
+        .knob-cap {
+            width: clamp(55px, 12vw, 70px);
+            height: clamp(55px, 12vw, 70px);
+        }
+
+        .brand-mark {
+            display: none; /* Hide brand on mobile */
+        }
+
+        /* Make LCD text slightly smaller on very small phones */
+        .ui-middle {
+            font-size: clamp(56px, 12vw, 64px) !important;
+        }
+    }
+
+    /* iPhone SE (375 x 667) - Small screen */
+    @media (max-width: 375px) and (max-height: 670px) {
+        #device-chassis {
+            padding: max(env(safe-area-inset-top), 20px) 16px 12px 16px; /* More top padding */
+        }
+
+        .lcd-bezel {
+            height: 240px !important;
+            width: 85% !important; /* More side padding for squarer look */
+            margin-bottom: 25px !important; /* Push grille down */
+            margin-top: 8px;
+        }
+
+        .speaker-array {
+            height: 28px;
+            margin-bottom: 12px !important;
+        }
+
+        .knob {
+            width: 220px !important; /* Increased from 180px */
+            height: 220px !important;
+        }
+
+        .knob-cap {
+            width: 68px !important; /* Proportionally increased (220/180 * 56) */
+            height: 68px !important;
+        }
+    }
+
+    /* iPhone XR, 11, 12, 13 (414 x 896) - Standard tall phones */
+    @media (min-width: 376px) and (max-width: 430px) and (min-height: 800px) and (max-height: 900px) {
+        .lcd-bezel {
+            height: 320px !important; /* Increased height */
+            width: 88% !important; /* More side padding */
+            margin-top: 12px;
+            margin-bottom: 25px !important;
+        }
+    }
+
+    /* iPhone 14 Pro Max, 15 Pro Max (430 x 932) - Very tall phones */
+    @media (min-width: 415px) and (max-width: 450px) and (min-height: 900px) {
+        .lcd-bezel {
+            height: 360px !important; /* Much taller LCD */
+            width: 88% !important;
+            margin-top: 16px;
+            margin-bottom: 25px !important;
+        }
+
+        .speaker-array {
+            margin-bottom: 24px !important;
+        }
+
+        .control-deck {
+            padding-bottom: 20px;
+        }
+    }
+
+    /* General tall phones catch-all */
+    @media (min-height: 850px) and (max-width: 768px) {
+        .lcd-bezel {
+            height: 340px;
+            margin-top: 12px;
+            margin-bottom: 25px !important;
+        }
+
+        .speaker-array {
+            margin-bottom: 24px !important;
+        }
+
+        .control-deck {
+            padding-bottom: 20px;
+        }
+    }
+
+    /* iPad Mini and larger tablets - show as desktop */
+    @media (min-width: 769px) {
+        /* Desktop styles already apply, do nothing */
+    }
+    }
+
+    
+    .brand-mark {
+        position: absolute;
+        top: 24px;
+        right: 28px;
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: #777;
+        font-weight: 700;
+        text-transform: uppercase;
+        opacity: 0.6;
+    }
+
+    
+    .lcd-bezel {
+        width: 100%;
+        height: 280px;
+        background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+        border-radius: 12px;
+        padding: 4px;
+        box-shadow: 
+            inset 3px 3px 6px rgba(0,0,0,0.5),
+            inset -2px -2px 4px rgba(255,255,255,0.08),
+            0 1px 2px rgba(255,255,255,0.15),
+            inset -3px -3px 8px rgba(255,255,255,0.2);
+        margin-bottom: 32px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .lcd-screen {
+        width: 100%;
+        height: 100%;
+        /* background-color will be set by JavaScript theme system */
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        /* color will be set by JavaScript theme system */
+        box-shadow: 
+            inset 2px 2px 4px rgba(0,0,0,0.15),
+            inset -1px -1px 2px rgba(255,255,255,0.1),
+            0 0 0 0.5px rgba(0,0,0,0.2);
+        transition: background-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+    }
+
+    
+    .lcd-screen::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: 
+            linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+        background-size: 3px 3px;
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    
+    .speaker-array {
+        display: grid;
+        grid-template-columns: repeat(14, 1fr);
+        gap: 6px;
+        width: 80%;
+        height: 40px;
+        margin-bottom: 40px;
+        opacity: 0.8;
+    }
+    .speaker-hole {
+        width: 4px;
+        height: 4px;
+        background: #333;
+        border-radius: 50%;
+        box-shadow: inset 1px 1px 1px rgba(0,0,0,0.8);
+    }
+
+    
+    .control-deck {
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+
+
+    
+
+
+    
+    .knob {
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        /* Less white, more gray tones */
+        background: radial-gradient(circle at 35% 35%, #ececec, #e0e0e0 60%, #d8d8d8);
+        position: relative;
+        /* Dimensional shadows - donut raised from surface */
+        box-shadow: 
+            /* Outer dark border */
+            0 0 0 1px rgba(0,0,0,0.3),
+            /* Top-left highlight (light catching raised edge) */
+            inset 2px 2px 3px rgba(255,255,255,0.9),
+            /* Bottom-right shadow (recessed side) */
+            inset -3px -3px 4px rgba(0,0,0,0.15),
+            /* Subtle outer shadow for depth */
+            0 2px 4px rgba(0,0,0,0.1);
+        cursor: grab;
+    }
+
+    .knob:active {
+        cursor: grabbing;
+    }
+
+    
+
+
+    
+    .knob-cap {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 82px;
+        height: 82px;
+        border-radius: 50%;
+        /* Recessed well - darker gray */
+        background: radial-gradient(circle at 35% 35%, #dcdcdc, #d0d0d0 60%, #c8c8c8);
+        box-shadow: 
+            /* Inner circle border */
+            0 0 0 0.5px rgba(0,0,0,0.25),
+            /* Deep inner shadow on bottom-right (recessed) */
+            inset -2px -2px 3px rgba(0,0,0,0.2),
+            /* Light highlight on top-left (raised edge catching light) */
+            inset 1px 1px 2px rgba(255,255,255,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        will-change: transform;
+    }
+
+    
+
+
+    
+    .knob-button {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        /* Button sitting in recessed well - medium gray */
+        background: radial-gradient(circle at 40% 40%, #e6e6e6, #dadada 70%, #d2d2d2);
+        box-shadow: 
+            /* Slight raised edge */
+            0 1px 2px rgba(255,255,255,0.8),
+            /* Subtle depth */
+            inset -1px -1px 2px rgba(0,0,0,0.08),
+            inset 1px 1px 1px rgba(255,255,255,0.5);
+        transition: transform 0.1s;
+        position: relative;
+    }
+    
+    .knob-button:active {
+        transform: scale(0.98);
+    }
+
+    
+    .ui-top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .ui-middle {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+    }
+
+    .ui-label {
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .ui-value {
+        font-size: 64px;
+        font-weight: 500;
+        letter-spacing: -1px;
+        line-height: 1;
+    }
+
+    .ui-unit {
+        font-size: 11px;
+        font-weight: 400;
+        margin-top: 4px;
+        opacity: 0.7;
+        letter-spacing: 0.5px;
+    }
+
+    .ui-bottom {
+        height: 20px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        position: relative;
+    }
+
+    
+    .dots {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+    .dot {
+        width: 6px;
+        height: 6px;
+        background: #000;
+        border-radius: 50%;
+        opacity: 0.2;
+    }
+    .dot.active {
+        opacity: 1;
+        background: var(--accent-orange);
+    }
+
+    
+    .wave-container {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+        height: 16px;
+        opacity: 1;
+    }
+    .bar {
+        width: 3px;
+        height: 40%;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 2px;
+        transition: background 0.3s, height 0.15s ease-out;
+    }
+    .wave-container.playing .bar {
+        background: #000;
+        animation: equalizer 0.8s ease-in-out infinite;
+    }
+    @keyframes equalizer {
+        0%, 100% { height: 20%; }
+        50% { height: 80%; }
+    }
+    .bar:nth-child(1) { animation-delay: 0s; }
+    .bar:nth-child(2) { animation-delay: 0.1s; }
+    .bar:nth-child(3) { animation-delay: 0.2s; }
+    .bar:nth-child(4) { animation-delay: 0.15s; }
+    .bar:nth-child(5) { animation-delay: 0.05s; }
+
+    /* Animated gradient for 2004 backgrounds */
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    
+    .chassis-label {
+        position: absolute;
+        bottom: 30px;
+        width: 100%;
+        text-align: center;
+        font-size: 10px;
+        color: #888;
+        font-weight: 600;
+        letter-spacing: 1px;
+        pointer-events: none;
+    }
+
+</style>
+</head>
+<body vid="6">
+
+<div id="device-chassis" vid="7">
+
+
+    
+    <div class="lcd-bezel" vid="8">
+        <div class="lcd-screen" id="screen" vid="9">
+            <div class="ui-top" vid="10">
+                <span id="mode-text" vid="11" style="font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.6;">MENU</span>
+
+                <div class="wave-container" id="visualizer" vid="12">
+                    <div class="bar" vid="13"></div>
+                    <div class="bar" vid="14"></div>
+                    <div class="bar" vid="15"></div>
+                    <div class="bar" vid="16"></div>
+                    <div class="bar" vid="17"></div>
+                </div>
+            </div>
+            
+            <div class="ui-middle" vid="18">
+                <div class="ui-label" id="main-label" vid="19"></div>
+                <div class="ui-value" id="main-value" vid="20">MENU</div>
+                <div class="ui-unit" id="main-unit" vid="21"></div>
+            </div>
+
+            <div class="ui-bottom" vid="22">
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="speaker-array" vid="23">
+        
+    </div>
+
+    
+    <div class="control-deck" vid="24">
+            <div class="knob" id="knob" vid="25">
+                <div class="knob-cap" vid="26">
+                    <div class="knob-marker" vid="27"></div>
+                    <div class="knob-button" id="knob-btn" vid="28"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+<script vid="29">
+    
+    const speakerContainer = document.querySelector('.speaker-array');
+    for(let i=0; i<42; i++) {
+        let hole = document.createElement('div');
+        hole.className = 'speaker-hole';
+        speakerContainer.appendChild(hole);
+    }
+
+    
+    const MODES = ['Session', 'Length', 'Sound', 'Settings'];
+    const SOUNDS = ['Silence', 'Forest', 'Nature', 'Stream', 'Rain'];
+    const TIMER_PRESETS = [5, 10, 15, 20];
+    const timerPresets = [5, 10, 15, 20];
+    const soundOptions = ['Silence', 'Rain', 'Ocean', 'Forest', 'Wind'];
+    // All available colors (can be used with any chassis style)
+    const COLORS = [
+        { name: 'Arctic', bg: '#C5E3F6', text: '#0a2540' },
+        { name: 'Amber', bg: '#FF9F1C', text: '#1a0f00' },
+        { name: 'Dark', bg: '#2c2c2c', text: '#fff' },
+        { name: 'Sunrise', bg: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%)', text: '#1a0f00' },
+        { name: 'Dusk', bg: '#FFA07A', text: '#2c1810' },
+        { name: 'Midnight', bg: 'linear-gradient(135deg, #0a1128 0%, #1a0a1f 100%)', text: '#ffffff' }
+    ];
+    
+    const STYLE_YEARS = ['2001', '2004'];
+    
+    const HAPTICS_OPTIONS = ['On', 'Off'];
+    const ANIMATION_OPTIONS = ['On', 'Off'];
+    
+    let state = {
+        currentView: 'SESSION',
+        modeIndex: 0,
+        timer: 5,
+        soundIndex: 0,
+        selectedSound: 'Silence',
+        isPlaying: false,
+        volume: 50,
+        colorIndex: 0, // Index into COLORS array
+        tempColorIndex: 0, // Temporary storage for color during animation selection
+        styleYear: '2001', // '2001' or '2004' - controls chassis aesthetic
+        settingsView: 'main',
+        hapticsEnabled: true,
+        animationEnabled: false,
+        soundPresetIndex: 0,
+        setupPresetIndex: 0,
+        countdownActive: false,
+        countdownPaused: false,
+        countdownInterval: null,
+        remainingSeconds: 0,
+        timerPresetIndex: 0,
+        timerDuration: 300,
+        countdownTime: 300
+    };
+
+    // Audio element for meditation sounds
+    let audioElement = new Audio();
+    audioElement.loop = true;
+    audioElement.volume = 0.5;
+
+    function playSound(soundName) {
+        if (soundName === 'Silence' || !soundName) {
+            audioElement.pause();
+            audioElement.src = '';
+            return;
+        }
+        
+        // Map sound name to file (lowercase)
+        const soundFile = `${soundName.toLowerCase()}.mp3`;
+        
+        // Only reload if it's a different sound
+        if (audioElement.src !== soundFile && !audioElement.src.endsWith(soundFile)) {
+            audioElement.src = soundFile;
+        }
+        
+        audioElement.play().catch(err => {
+            console.log('Audio play failed:', err);
+        });
+    }
+
+    function stopSound() {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        audioElement.volume = 0.5; // Reset volume
+    }
+
+    function fadeOutSound(seconds) {
+        const fadeSteps = 20; // 20 steps for smooth fade
+        const fadeInterval = (seconds * 1000) / fadeSteps;
+        const volumeStep = audioElement.volume / fadeSteps;
+        
+        let currentStep = 0;
+        const fadeTimer = setInterval(() => {
+            currentStep++;
+            audioElement.volume = Math.max(0, audioElement.volume - volumeStep);
+            
+            if (currentStep >= fadeSteps) {
+                clearInterval(fadeTimer);
+                stopSound();
+            }
+        }, fadeInterval);
+    }
+
+
+    function startCountdown() {
+        // Clear any existing countdown interval first
+        if (state.countdownInterval) {
+            clearInterval(state.countdownInterval);
+        }
+        
+        state.countdownActive = true;
+        state.countdownPaused = false;
+        state.remainingSeconds = state.timer * 60;
+        
+        // Start playing audio if a sound is selected
+        if (state.selectedSound && state.selectedSound !== 'Silence') {
+            playSound(state.selectedSound);
+        }
+        
+        state.countdownInterval = setInterval(() => {
+            if (!state.countdownPaused) {
+                state.remainingSeconds--;
+                
+                // Start fade out at 4 seconds remaining
+                if (state.remainingSeconds === 4 && audioElement.src && !audioElement.paused) {
+                    fadeOutSound(4);
+                }
+                
+                if (state.remainingSeconds <= 0) {
+                    clearInterval(state.countdownInterval);
+                    state.countdownActive = false;
+                    state.countdownPaused = false;
+                    state.remainingSeconds = 0;
+                    state.isPlaying = false;
+                    stopSound();
+                }
+                
+                updateDisplay();
+            }
+        }, 1000);
+        
+        updateDisplay();
+    }
+
+    
+    const knob = document.getElementById('knob');
+    const knobBtn = document.getElementById('knob-btn');
+    const screen = document.getElementById('screen');
+    const modeText = document.getElementById('mode-text');
+    const mainLabel = document.getElementById('main-label');
+    const mainValue = document.getElementById('main-value');
+    const mainUnit = document.getElementById('main-unit');
+    const visualizer = document.getElementById('visualizer');
+
+    
+    let currentRotation = 0;
+    let lastAngle = null;
+    let lastRotationCheckpoint = 0;
+    let isDragging = false;
+    let center = { x: 0, y: 0 };
+
+    
+    function updateDisplay() {
+        // Use the appropriate color based on current view
+        let currentTheme;
+        // Preview color during selection, otherwise use saved color
+        if (state.currentView === 'SETTINGS_COLOR') {
+            currentTheme = COLORS[state.setupPresetIndex];
+        } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION') {
+            // Preview the color we're setting animation for
+            currentTheme = COLORS[state.tempColorIndex];
+        } else {
+            currentTheme = COLORS[state.colorIndex];
+        }
+        
+        // Apply background (solid or gradient)
+        // Clear both properties first to ensure clean slate
+        screen.style.background = '';
+        screen.style.backgroundColor = '';
+        screen.style.backgroundSize = '';
+        screen.style.animation = '';
+        
+        if (currentTheme.bg.includes('gradient')) {
+            screen.style.background = currentTheme.bg;
+            
+            // Apply animation if enabled and color supports it (Sunrise or Midnight)
+            const currentColorName = currentTheme.name;
+            const supportsAnimation = currentColorName === 'Sunrise' || currentColorName === 'Midnight';
+            if (state.animationEnabled && supportsAnimation) {
+                screen.style.backgroundSize = '200% 200%';
+                screen.style.animation = 'gradientShift 8s ease infinite';
+            }
+        } else {
+            screen.style.backgroundColor = currentTheme.bg;
+        }
+        screen.style.color = currentTheme.text;
+
+        mainValue.style.display = 'block';
+        mainValue.style.fontSize = '64px';
+        mainValue.style.letterSpacing = '-1px';
+        mainValue.style.padding = '';
+        mainValue.style.marginLeft = '';
+        mainValue.style.marginRight = '';
+        mainValue.style.width = '';
+        mainValue.style.flexDirection = '';
+        mainValue.style.alignItems = '';
+
+        if (state.currentView === 'SESSION') {
+            showSession();
+        } else if (state.currentView === 'MENU') {
+            showMenu();
+        } else if (state.currentView === 'TIMER_PRESET') {
+            showTimerPresets();
+        } else if (state.currentView === 'TIMER_COUNTDOWN') {
+            showTimerCountdown();
+        } else if (state.currentView === 'SOUND') {
+            showSound();
+        } else if (state.currentView === 'SETTINGS') {
+            showSettings();
+        } else if (state.currentView === 'SETTINGS_THEME') {
+            showSettingsTheme();
+        } else if (state.currentView === 'SETTINGS_COLOR') {
+            showSettingsColor();
+        } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION') {
+            showSettingsColorAnimation();
+        } else if (state.currentView === 'SETTINGS_ANIMATION') {
+            showSettingsAnimation();
+        } else if (state.currentView === 'SETTINGS_HAPTICS') {
+            showSettingsHaptics();
+        }
+
+        if(state.isPlaying) visualizer.classList.add('playing');
+        else visualizer.classList.remove('playing');
+        
+        // Apply 2004 aesthetic changes (flat dial, no LCD border, chassis color)
+        const lcdBezel = document.querySelector('.lcd-bezel');
+        const chassis = document.getElementById('device-chassis');
+        
+        if (state.styleYear === '2004') {
+            // Change chassis to lighter gray
+            chassis.style.background = '#e4e4e4';
+            
+            // Flat, minimal dial for 2004 - using CSS variables
+            knob.style.background = 'var(--knob-base)';
+            knob.style.boxShadow = '0 0 0 1px #d0d0d0, 0 1px 3px rgba(0,0,0,0.1)';
+            
+            // Flat knob cap - using CSS variable
+            const knobCap = knob.querySelector('.knob-cap');
+            knobCap.style.background = 'var(--knob-cap)';
+            knobCap.style.boxShadow = '0 0 0 0.5px #c0c0c0, 0 1px 2px rgba(0,0,0,0.08)';
+            
+            // Center button matches chassis color for 2004
+            knobBtn.style.background = '#e4e4e4';
+            knobBtn.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(255,255,255,0.3)';
+            
+            // Remove LCD bezel depth
+            lcdBezel.style.background = '#f5f5f5';
+            lcdBezel.style.boxShadow = 'none';
+            lcdBezel.style.padding = '2px';
+            
+            // Remove LCD screen border
+            screen.style.boxShadow = 'none';
+        } else {
+            // Classic gray chassis for 2001
+            chassis.style.background = '#C4C4C4';
+            
+            // Dimensional dial for 2001 (donut with depth) - less white
+            knob.style.background = 'radial-gradient(circle at 35% 35%, #ececec, #e0e0e0 60%, #d8d8d8)';
+            knob.style.boxShadow = '0 0 0 1px rgba(0,0,0,0.3), inset 2px 2px 3px rgba(255,255,255,0.9), inset -3px -3px 4px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1)';
+            
+            // Recessed inner well - darker gray
+            const knobCap = knob.querySelector('.knob-cap');
+            knobCap.style.background = 'radial-gradient(circle at 35% 35%, #dcdcdc, #d0d0d0 60%, #c8c8c8)';
+            knobCap.style.boxShadow = '0 0 0 0.5px rgba(0,0,0,0.25), inset -2px -2px 3px rgba(0,0,0,0.2), inset 1px 1px 2px rgba(255,255,255,0.6)';
+            
+            // Center button in well - medium gray
+            knobBtn.style.background = 'radial-gradient(circle at 40% 40%, #e6e6e6, #dadada 70%, #d2d2d2)';
+            knobBtn.style.boxShadow = '0 1px 2px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.08), inset 1px 1px 1px rgba(255,255,255,0.5)';
+            
+            // LCD bezel - lighter, not so dark
+            lcdBezel.style.background = 'linear-gradient(145deg, #3a3a3a, #2a2a2a)';
+            lcdBezel.style.boxShadow = 'inset 3px 3px 6px rgba(0,0,0,0.5), inset -2px -2px 4px rgba(255,255,255,0.08), 0 1px 2px rgba(255,255,255,0.15), inset -3px -3px 8px rgba(255,255,255,0.2)';
+            lcdBezel.style.padding = '4px';
+            
+            // Restore LCD screen border for 2001
+            screen.style.boxShadow = 'inset 2px 2px 4px rgba(0,0,0,0.15), inset -1px -1px 2px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.2)';
+        }
+    }
+
+    function showSession() {
+        modeText.innerText = 'SESSION';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        const soundName = state.selectedSound || 'Silence';
+        
+        // Center the session content
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'center';
+        
+        // If countdown is active, show remaining time
+        if (state.countdownActive) {
+            const mins = Math.floor(state.remainingSeconds / 60);
+            const secs = state.remainingSeconds % 60;
+            mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${mins}:${secs.toString().padStart(2, '0')}</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7;">${soundName}${state.countdownPaused ? ' • PAUSED' : ''}</div>`;
+        } else {
+            // Otherwise show the preset timer
+            const minutes = Math.floor(state.timer);
+            mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${minutes}:00</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7;">${soundName}</div>`;
+        }
+    }
+
+    function showMenu() {
+        modeText.innerText = 'MENU';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const menuHTML = MODES.map((mode, i) => {
+            const isSelected = i === state.modeIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+                text-transform: capitalize;
+            ">${mode}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = menuHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+
+    function showTimerPresets() {
+        modeText.innerText = 'LENGTH';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const presetHTML = TIMER_PRESETS.map((preset, i) => {
+            const isSelected = i === state.timerPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${preset} Minutes</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = presetHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+
+    function showTimerCountdown() {
+        modeText.innerText = 'SESSION';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Center the countdown content
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'center';
+        
+        const mins = Math.floor(state.remainingSeconds / 60);
+        const secs = state.remainingSeconds % 60;
+        const soundName = state.selectedSound || 'Silence';
+        
+        mainValue.innerHTML = `<div style="font-size: 64px; font-weight: 500; letter-spacing: -1px;">${mins}:${secs.toString().padStart(2, '0')}</div><div style="font-size: 18px; margin-top: 8px; font-weight: 400; opacity: 0.7;">${soundName}${state.countdownPaused ? ' • PAUSED' : ''}</div>`;
+        mainValue.style.fontSize = '';
+        mainValue.style.fontWeight = '';
+        mainValue.style.letterSpacing = '';
+    }
+
+    function showSound() {
+        modeText.innerText = 'SOUND';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        // Check if we're on a dark background
+        const currentColor = COLORS[state.colorIndex];
+        const isDarkBg = currentColor.bg.includes('#0a1128') || currentColor.bg.includes('#1a0a1f') || currentColor.bg.includes('#2c2c2c');
+        
+        const soundHTML = SOUNDS.map((sound, i) => {
+            const isSelected = i === state.soundPresetIndex;
+            const hoverBg = isDarkBg 
+                ? 'linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))' 
+                : 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))';
+            const borderColor = isDarkBg ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+            
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? hoverBg : 'transparent'};
+                border-bottom: 1px solid ${borderColor};
+                transition: all 0.1s ease;
+                text-transform: capitalize;
+            ">${sound}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = soundHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+
+    function showSettings() {
+        modeText.innerText = 'SETTINGS';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const settingsItems = ['Theme', 'Color', 'Haptics'];
+        const settingsHTML = settingsItems.map((item, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${item}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = settingsHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettingsTheme() {
+        modeText.innerText = 'THEME';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const themeYears = ['2001', '2004'];
+        const themeHTML = themeYears.map((year, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${year}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = themeHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettingsColor() {
+        modeText.innerText = 'COLOR';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        // Check if we're on a dark background for better hover visibility
+        const currentColor = COLORS[state.setupPresetIndex];
+        const isDarkBg = currentColor.bg.includes('#0a1128') || currentColor.bg.includes('#1a0a1f') || currentColor.bg.includes('#2c2c2c');
+        
+        const colorHTML = COLORS.map((color, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            const hoverBg = isDarkBg 
+                ? 'linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))' 
+                : 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))';
+            const borderColor = isDarkBg ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+            
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? hoverBg : 'transparent'};
+                border-bottom: 1px solid ${borderColor};
+                transition: all 0.1s ease;
+            ">${color.name}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = colorHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettingsAnimation() {
+        modeText.innerText = 'ANIMATION';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const animationHTML = ANIMATION_OPTIONS.map((option, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${option}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = animationHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettingsColorAnimation() {
+        modeText.innerText = 'ANIMATION';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const animationHTML = ANIMATION_OPTIONS.map((option, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${option}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = animationHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettings2004() {
+        modeText.innerText = '2004';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const options2004 = ['Backgrounds', 'Animation'];
+        const optionsHTML = options2004.map((option, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${option}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = optionsHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettingsThemeYear() {
+        modeText.innerText = state.themeYear;
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const themeArray = state.themeYear === '2001' ? THEMES_2001 : THEMES_2004;
+        const themeHTML = themeArray.map((theme, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+                text-transform: capitalize;
+            ">${theme.name}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = themeHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettings2004Backgrounds() {
+        modeText.innerText = 'BACKGROUNDS';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        // Determine if we're on a dark background for hover state
+        const currentTheme = THEMES_2004[state.setupPresetIndex];
+        const isDarkBg = currentTheme.bg.includes('#0a1128') || currentTheme.bg.includes('#1a0a1f');
+        
+        const backgroundsHTML = BACKGROUNDS_2004.map((bg, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            const hoverBg = isDarkBg 
+                ? 'linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))' 
+                : 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))';
+            const borderColor = isDarkBg ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+            
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? hoverBg : 'transparent'};
+                border-bottom: 1px solid ${borderColor};
+                transition: all 0.1s ease;
+            ">${bg}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = backgroundsHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettings2004Animation() {
+        modeText.innerText = 'ANIMATION';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const animationHTML = ANIMATION_OPTIONS.map((option, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${option}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = animationHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+    
+    function showSettingsHaptics() {
+        modeText.innerText = 'HAPTICS';
+        mainLabel.innerText = '';
+        mainUnit.innerText = '';
+        
+        // Reset to top alignment for lists
+        const middleContainer = document.querySelector('.ui-middle');
+        middleContainer.style.justifyContent = 'flex-start';
+        
+        const hapticsHTML = HAPTICS_OPTIONS.map((option, i) => {
+            const isSelected = i === state.setupPresetIndex;
+            return `<div style="
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 100%;
+                padding: 0 16px;
+                font-size: 18px;
+                font-weight: 500;
+                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.1s ease;
+            ">${option}</div>`;
+        }).join('');
+        
+        mainValue.innerHTML = hapticsHTML;
+        mainValue.style.display = 'flex';
+        mainValue.style.flexDirection = 'column';
+        mainValue.style.alignItems = 'flex-start';
+        mainValue.style.justifyContent = 'flex-start';
+        mainValue.style.fontSize = 'initial';
+        mainValue.style.padding = '0';
+        mainValue.style.marginLeft = '-20px';
+        mainValue.style.marginRight = '-20px';
+        mainValue.style.width = 'calc(100% + 40px)';
+    }
+
+    function rotateKnob(delta) {
+        const sensitivity = 30;
+        
+        currentRotation += delta;
+        const knobCap = knob.querySelector('.knob-cap');
+        knobCap.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg)`;
+
+        if (Math.abs(currentRotation - lastRotationCheckpoint) > sensitivity) {
+            const steps = Math.floor((currentRotation - lastRotationCheckpoint) / sensitivity);
+            lastRotationCheckpoint += steps * sensitivity;
+
+            handleInput(steps);
+        }
+    }
+
+    function handleInput(steps) {
+        if(steps === 0) return;
+        const direction = steps > 0 ? 1 : -1;
+
+        if (state.currentView === 'MENU') {
+            state.modeIndex += direction;
+            if(state.modeIndex < 0) state.modeIndex = MODES.length - 1;
+            if(state.modeIndex >= MODES.length) state.modeIndex = 0;
+        } else if (state.currentView === 'TIMER_PRESET') {
+            state.timerPresetIndex += direction;
+            if(state.timerPresetIndex < 0) state.timerPresetIndex = TIMER_PRESETS.length - 1;
+            if(state.timerPresetIndex >= TIMER_PRESETS.length) state.timerPresetIndex = 0;
+        } else if (state.currentView === 'TIMER_COUNTDOWN') {
+            // Dial does nothing during countdown
+        } else if (state.currentView === 'SOUND') {
+            state.soundPresetIndex += direction;
+            if(state.soundPresetIndex < 0) state.soundPresetIndex = SOUNDS.length - 1;
+            if(state.soundPresetIndex >= SOUNDS.length) state.soundPresetIndex = 0;
+        } else if (state.currentView === 'SETTINGS') {
+            // Theme, Color, Haptics (3 items)
+            state.setupPresetIndex += direction;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = 2;
+            if(state.setupPresetIndex > 2) state.setupPresetIndex = 0;
+        } else if (state.currentView === 'SETTINGS_THEME') {
+            // 2001, 2004 (2 items)
+            state.setupPresetIndex += direction;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = 1;
+            if(state.setupPresetIndex > 1) state.setupPresetIndex = 0;
+        } else if (state.currentView === 'SETTINGS_COLOR') {
+            // All 6 colors
+            state.setupPresetIndex += direction;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = COLORS.length - 1;
+            if(state.setupPresetIndex >= COLORS.length) state.setupPresetIndex = 0;
+        } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION') {
+            // On, Off (2 items)
+            state.setupPresetIndex += direction;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = 1;
+            if(state.setupPresetIndex > 1) state.setupPresetIndex = 0;
+        } else if (state.currentView === 'SETTINGS_ANIMATION') {
+            // On, Off (2 items)
+            state.setupPresetIndex += direction;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = 1;
+            if(state.setupPresetIndex > 1) state.setupPresetIndex = 0;
+        } else if (state.currentView === 'SETTINGS_HAPTICS') {
+            // On, Off (2 items)
+            state.setupPresetIndex += direction;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = 1;
+            if(state.setupPresetIndex > 1) state.setupPresetIndex = 0;
+        }
+        
+        updateDisplay();
+        triggerHaptic();
+    }
+
+    function triggerHaptic() {
+        if (state.hapticsEnabled && navigator.vibrate) navigator.vibrate(5);
+    }
+
+    
+
+    
+    let pointerDownPos = null;
+    let pointerDownTime = 0;
+    let pointerDownInTopArea = false;
+    
+    knob.addEventListener('pointerdown', (e) => {
+        if (e.target === knobBtn || knobBtn.contains(e.target)) {
+            return;
+        }
+        
+        const rect = knob.getBoundingClientRect();
+        center = {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2
+        };
+        
+        // Check if tap is in top 25-30% of dial (menu button area)
+        const relativeY = e.clientY - rect.top;
+        const dialHeight = rect.height;
+        const topThreshold = dialHeight * 0.275; // 27.5% from top
+        const isTapInTopArea = relativeY <= topThreshold;
+        
+        // Store pointer down position and time for tap detection
+        pointerDownPos = { x: e.clientX, y: e.clientY };
+        pointerDownTime = Date.now();
+        pointerDownInTopArea = isTapInTopArea; // Store for later
+        
+        isDragging = true;
+        const x = e.clientX - center.x;
+        const y = e.clientY - center.y;
+        lastAngle = (Math.atan2(y, x) * (180 / Math.PI) + 90 + 360) % 360;
+        
+        knob.setPointerCapture(e.pointerId);
+        e.preventDefault();
+    });
+
+    window.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        
+        // Check if we've moved enough to count as a drag (not a tap)
+        if (pointerDownPos) {
+            const distance = Math.sqrt(
+                Math.pow(e.clientX - pointerDownPos.x, 2) + 
+                Math.pow(e.clientY - pointerDownPos.y, 2)
+            );
+            
+            // If movement is less than threshold, don't rotate yet
+            if (distance < 15) {
+                return;
+            }
+        }
+        
+        const x = e.clientX - center.x;
+        const y = e.clientY - center.y;
+        
+        let angle = Math.atan2(y, x) * (180 / Math.PI);
+        angle = (angle + 90 + 360) % 360;
+
+        if (lastAngle !== null) {
+            let delta = angle - lastAngle;
+            
+            if (delta > 180) delta -= 360;
+            if (delta < -180) delta += 360;
+            
+            rotateKnob(delta);
+        }
+        
+        lastAngle = angle;
+    });
+
+    window.addEventListener('pointerup', (e) => {
+        if (isDragging && pointerDownPos) {
+            const upPos = { x: e.clientX, y: e.clientY };
+            const distance = Math.sqrt(
+                Math.pow(upPos.x - pointerDownPos.x, 2) + 
+                Math.pow(upPos.y - pointerDownPos.y, 2)
+            );
+            const timeDiff = Date.now() - pointerDownTime;
+            
+            // Check if this was a tap (small movement, quick release)
+            if (distance < 10 && timeDiff < 300) {
+                // Check if tap was in top area - return to MENU
+                if (pointerDownInTopArea) {
+                    state.currentView = 'MENU';
+                    updateDisplay();
+                    triggerHaptic();
+                    isDragging = false;
+                    lastAngle = null;
+                    pointerDownPos = null;
+                    pointerDownInTopArea = false;
+                    return;
+                }
+                
+                // Determine if tap was on left or right side
+                const rect = knob.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const tapX = e.clientX;
+                
+                if (state.currentView === 'TIMER_COUNTDOWN' && tapX < centerX) {
+                    // Left side tap during countdown - show timer presets
+                    state.currentView = 'TIMER_PRESET';
+                    state.countdownActive = false;
+                    state.countdownPaused = false;
+                    state.isPlaying = false;
+                    clearInterval(state.countdownInterval);
+                    updateDisplay();
+                    triggerHaptic();
+                } else if (state.currentView === 'SOUND' && tapX < centerX) {
+                    // Left side tap on Sound list - return to MENU
+                    state.currentView = 'MENU';
+                    updateDisplay();
+                    triggerHaptic();
+                } else if (state.currentView === 'SETTINGS' && tapX < centerX) {
+                    // Left side tap on Settings - return to MENU
+                    state.currentView = 'MENU';
+                    state.setupPresetIndex = 0;
+                    updateDisplay();
+                    triggerHaptic();
+                } else if (state.currentView === 'SETTINGS_THEME' && tapX < centerX) {
+                    // Left side tap on Theme - return to SETTINGS
+                    state.currentView = 'SETTINGS';
+                    state.setupPresetIndex = 0;
+                    updateDisplay();
+                    triggerHaptic();
+                } else if (state.currentView === 'SETTINGS_COLOR' && tapX < centerX) {
+                    // Left side tap on Color - return to SETTINGS
+                    state.currentView = 'SETTINGS';
+                    state.setupPresetIndex = 1;
+                    updateDisplay();
+                    triggerHaptic();
+                } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION' && tapX < centerX) {
+                    // Left side tap on Color Animation - return to SETTINGS_COLOR
+                    state.currentView = 'SETTINGS_COLOR';
+                    state.setupPresetIndex = state.tempColorIndex;
+                    updateDisplay();
+                    triggerHaptic();
+                } else if (state.currentView === 'SETTINGS_ANIMATION' && tapX < centerX) {
+                    // Left side tap on Animation - return to SETTINGS
+                    state.currentView = 'SETTINGS';
+                    state.setupPresetIndex = 1;
+                    updateDisplay();
+                    triggerHaptic();
+                } else if (state.currentView === 'SETTINGS_HAPTICS' && tapX < centerX) {
+                    // Left side tap on Haptics - return to SETTINGS
+                    state.currentView = 'SETTINGS';
+                    state.setupPresetIndex = 2; // Now index 2, not 3
+                    updateDisplay();
+                    triggerHaptic();
+                }
+            }
+        }
+        
+        isDragging = false;
+        lastAngle = null;
+        pointerDownPos = null;
+        pointerDownInTopArea = false;
+    });
+
+    
+    let pressTimer;
+    
+    knobBtn.addEventListener('pointerdown', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        knobBtn.style.transform = "scale(0.92)";
+    });
+
+    knobBtn.addEventListener('pointerup', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        knobBtn.style.transform = "scale(1)";
+        
+        // Quick tap - execute action based on current view
+        if (state.currentView === 'SESSION') {
+            // Check if there's an active countdown
+            if (state.countdownActive) {
+                // Resume existing countdown
+                state.currentView = 'TIMER_COUNTDOWN';
+                state.isPlaying = state.selectedSound && state.selectedSound !== 'Silence';
+            } else {
+                // Start new countdown
+                state.timer = state.timer;
+                state.currentView = 'TIMER_COUNTDOWN';
+                state.isPlaying = state.selectedSound && state.selectedSound !== 'Silence';
+                startCountdown();
+            }
+        } else if (state.currentView === 'MENU') {
+            // Select the highlighted mode
+            if (state.modeIndex === 0) {
+                // Going to SESSION - don't reset countdown if active
+                state.currentView = 'SESSION';
+            } else if (state.modeIndex === 1) {
+                state.currentView = 'TIMER_PRESET';
+            } else if (state.modeIndex === 2) {
+                state.currentView = 'SOUND';
+            } else if (state.modeIndex === 3) {
+                state.currentView = 'SETTINGS';
+                state.setupPresetIndex = 0;
+            }
+        } else if (state.currentView === 'TIMER_PRESET') {
+            // Start countdown with selected preset
+            state.timer = TIMER_PRESETS[state.timerPresetIndex];
+            
+            // If a sound is selected (not SILENCE), start countdown with sound
+            if (state.selectedSound && state.selectedSound !== 'SILENCE') {
+                state.currentView = 'TIMER_COUNTDOWN';
+                state.isPlaying = true;
+                startCountdown();
+            } else {
+                // No sound selected, just start timer
+                state.currentView = 'TIMER_COUNTDOWN';
+                state.isPlaying = false;
+                startCountdown();
+            }
+        } else if (state.currentView === 'TIMER_COUNTDOWN') {
+            // Pause/resume countdown and sound
+            state.countdownPaused = !state.countdownPaused;
+            if (state.countdownPaused) {
+                state.isPlaying = false;
+                audioElement.pause();
+            } else if (state.selectedSound && state.selectedSound !== 'Silence') {
+                state.isPlaying = true;
+                if (audioElement.src) {
+                    audioElement.play();
+                } else {
+                    playSound(state.selectedSound);
+                }
+            }
+        } else if (state.currentView === 'SOUND') {
+            // Select sound from list
+            const selectedSoundName = SOUNDS[state.soundPresetIndex];
+            state.selectedSound = selectedSoundName;
+            
+            // If countdown is active and not paused, switch to the new sound immediately
+            if (state.countdownActive && !state.countdownPaused) {
+                state.isPlaying = selectedSoundName !== 'Silence';
+                if (selectedSoundName !== 'Silence') {
+                    playSound(selectedSoundName);
+                } else {
+                    stopSound();
+                }
+            }
+            
+            state.currentView = 'MENU';
+        } else if (state.currentView === 'SETTINGS') {
+            // Navigate into Theme, Color, or Haptics
+            if (state.setupPresetIndex === 0) {
+                // Theme
+                state.currentView = 'SETTINGS_THEME';
+                state.setupPresetIndex = state.styleYear === '2004' ? 1 : 0;
+            } else if (state.setupPresetIndex === 1) {
+                // Color
+                state.currentView = 'SETTINGS_COLOR';
+                state.setupPresetIndex = state.colorIndex;
+            } else if (state.setupPresetIndex === 2) {
+                // Haptics
+                state.currentView = 'SETTINGS_HAPTICS';
+                state.setupPresetIndex = state.hapticsEnabled ? 0 : 1;
+            }
+        } else if (state.currentView === 'SETTINGS_THEME') {
+            // Select style year (2001 or 2004)
+            state.styleYear = state.setupPresetIndex === 0 ? '2001' : '2004';
+            state.currentView = 'SETTINGS';
+            state.setupPresetIndex = 0;
+        } else if (state.currentView === 'SETTINGS_COLOR') {
+            // Check if selected color supports animation
+            const selectedColor = COLORS[state.setupPresetIndex];
+            const hasAnimation = selectedColor.name === 'Sunrise' || selectedColor.name === 'Midnight';
+            
+            if (hasAnimation) {
+                // Go to animation submenu for this color
+                state.currentView = 'SETTINGS_COLOR_ANIMATION';
+                // Store the color index temporarily
+                state.tempColorIndex = state.setupPresetIndex;
+                state.setupPresetIndex = state.animationEnabled ? 0 : 1;
+            } else {
+                // Confirm color selection (no animation for this color)
+                state.colorIndex = state.setupPresetIndex;
+                state.currentView = 'SETTINGS';
+                state.setupPresetIndex = 1; // Return to Color option
+            }
+        } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION') {
+            // Confirm animation setting and apply color
+            state.animationEnabled = state.setupPresetIndex === 0;
+            state.colorIndex = state.tempColorIndex;
+            state.currentView = 'SETTINGS';
+            state.setupPresetIndex = 1; // Return to Color option
+        } else if (state.currentView === 'SETTINGS_ANIMATION') {
+            // Toggle animation on/off (old global animation handler - can be removed)
+            state.animationEnabled = state.setupPresetIndex === 0;
+            state.currentView = 'SETTINGS';
+            state.setupPresetIndex = 1; // Return to Color option
+        } else if (state.currentView === 'SETTINGS_HAPTICS') {
+            // Toggle haptics on/off
+            state.hapticsEnabled = state.setupPresetIndex === 0;
+            state.currentView = 'SETTINGS';
+            state.setupPresetIndex = 2; // Return to Haptics option (now index 2, not 3)
+        }
+        
+        updateDisplay();
+        triggerHaptic();
+    });
+    
+
+
+
+
+    updateDisplay();
+
+</script>
+
+</body></html>
