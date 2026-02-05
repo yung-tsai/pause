@@ -4,7 +4,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#C4C4C4">
-<title vid="4">Omm Device</title>
+<title vid="4">Pause</title>
 <style vid="5">
     :root {
         
@@ -80,7 +80,7 @@
             background: var(--chassis-main);
             border-radius: 0;
             box-shadow: none;
-            padding: max(env(safe-area-inset-top), 24px) 20px max(env(safe-area-inset-bottom), 16px) 20px; /* Increased top padding */
+            padding: env(safe-area-inset-top, 0) 24px max(env(safe-area-inset-bottom), 28px) 24px; /* No top waste, 24px sides, extra bottom for Safari */
             transform: none;
             justify-content: space-between; /* Space out LCD, grille, and dial */
             align-items: center; /* Center everything horizontally */
@@ -88,9 +88,9 @@
 
         .lcd-bezel {
             flex-shrink: 0;
-            margin-bottom: 25px !important; /* Increased to push grille down */
-            margin-top: 8px; /* Add space above LCD */
-            height: clamp(220px, 35vh, 280px); /* Responsive height */
+            margin-bottom: 20px !important;
+            margin-top: 0; /* Remove extra top margin */
+            height: clamp(200px, 32vh, 260px); /* Reduced from 220px to fit better */
             width: 90%; /* Add side padding by constraining width */
         }
 
@@ -105,17 +105,17 @@
             flex-grow: 0;
             flex-shrink: 0;
             margin-top: auto; /* Push dial to bottom */
-            padding-bottom: max(env(safe-area-inset-bottom), 10px);
+            padding-bottom: 24px; /* Extra padding to keep above Safari bar */
         }
 
         .knob {
-            width: clamp(180px, 40vw, 240px);
-            height: clamp(180px, 40vw, 240px);
+            width: clamp(170px, 38vw, 220px); /* Reduced from 180-240 */
+            height: clamp(170px, 38vw, 220px);
         }
 
         .knob-cap {
-            width: clamp(55px, 12vw, 70px);
-            height: clamp(55px, 12vw, 70px);
+            width: clamp(50px, 11vw, 65px); /* Reduced proportionally */
+            height: clamp(50px, 11vw, 65px);
         }
 
         .brand-mark {
@@ -131,14 +131,14 @@
     /* iPhone SE (375 x 667) - Small screen */
     @media (max-width: 375px) and (max-height: 670px) {
         #device-chassis {
-            padding: max(env(safe-area-inset-top), 20px) 16px 12px 16px; /* More top padding */
+            padding: env(safe-area-inset-top, 0) 24px 28px 24px; /* No top waste, 24px sides */
         }
 
         .lcd-bezel {
-            height: 240px !important;
+            height: 220px !important; /* Reduced from 240px */
             width: 85% !important; /* More side padding for squarer look */
-            margin-bottom: 25px !important; /* Push grille down */
-            margin-top: 8px;
+            margin-bottom: 18px !important;
+            margin-top: 0;
         }
 
         .speaker-array {
@@ -147,58 +147,86 @@
         }
 
         .knob {
-            width: 220px !important; /* Increased from 180px */
-            height: 220px !important;
+            width: 200px !important; /* Reduced from 220px to fit above Safari bar */
+            height: 200px !important;
         }
 
         .knob-cap {
-            width: 68px !important; /* Proportionally increased (220/180 * 56) */
-            height: 68px !important;
+            width: 62px !important; /* Proportionally reduced */
+            height: 62px !important;
+        }
+
+        .control-deck {
+            padding-bottom: 20px; /* Keep above Safari bar */
         }
     }
 
     /* iPhone XR, 11, 12, 13 (414 x 896) - Standard tall phones */
     @media (min-width: 376px) and (max-width: 430px) and (min-height: 800px) and (max-height: 900px) {
         .lcd-bezel {
-            height: 320px !important; /* Increased height */
+            height: 280px !important; /* Reduced from 320px */
             width: 88% !important; /* More side padding */
-            margin-top: 12px;
-            margin-bottom: 25px !important;
+            margin-top: 0;
+            margin-bottom: 20px !important;
+        }
+
+        .knob {
+            width: 210px !important; /* Slightly smaller to fit */
+            height: 210px !important;
+        }
+
+        .knob-cap {
+            width: 62px !important;
+            height: 62px !important;
+        }
+
+        .control-deck {
+            padding-bottom: 28px; /* Keep above Safari bar */
         }
     }
 
     /* iPhone 14 Pro Max, 15 Pro Max (430 x 932) - Very tall phones */
     @media (min-width: 415px) and (max-width: 450px) and (min-height: 900px) {
         .lcd-bezel {
-            height: 360px !important; /* Much taller LCD */
+            height: 320px !important; /* Good height for tall phones */
             width: 88% !important;
-            margin-top: 16px;
-            margin-bottom: 25px !important;
+            margin-top: 0;
+            margin-bottom: 20px !important;
         }
 
         .speaker-array {
-            margin-bottom: 24px !important;
+            margin-bottom: 20px !important;
+        }
+
+        .knob {
+            width: 220px !important;
+            height: 220px !important;
+        }
+
+        .knob-cap {
+            width: 65px !important;
+            height: 65px !important;
         }
 
         .control-deck {
-            padding-bottom: 20px;
+            padding-bottom: 32px; /* Extra padding for tall phones */
         }
     }
 
     /* General tall phones catch-all */
     @media (min-height: 850px) and (max-width: 768px) {
         .lcd-bezel {
-            height: 340px;
-            margin-top: 12px;
-            margin-bottom: 25px !important;
+            height: 300px;
+            margin-top: 0;
+            margin-bottom: 20px !important;
         }
 
         .speaker-array {
-            margin-bottom: 24px !important;
+            margin-bottom: 20px !important;
         }
 
         .control-deck {
-            padding-bottom: 20px;
+            padding-bottom: 28px;
         }
     }
 
@@ -386,6 +414,7 @@
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        padding: 0 24px 0 0; /* No left padding so text aligns with list, right padding for icon */
     }
 
     .ui-middle {
@@ -448,7 +477,7 @@
 
     
     .wave-container {
-        display: flex;
+        display: flex; /* Show the header icon animation */
         gap: 3px;
         align-items: center;
         height: 16px;
@@ -493,6 +522,96 @@
         font-weight: 600;
         letter-spacing: 1px;
         pointer-events: none;
+    }
+
+    /* Install Banner Styles */
+    #install-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.95);
+        color: white;
+        padding: 20px;
+        z-index: 10000;
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+
+    .install-banner-content {
+        max-width: 500px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .install-banner-icon {
+        font-size: 32px;
+    }
+
+    .install-banner-text {
+        flex: 1;
+    }
+
+    .install-banner-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+
+    .install-banner-instruction {
+        font-size: 14px;
+        opacity: 0.9;
+        line-height: 1.4;
+    }
+
+    .install-banner-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 4px;
+    }
+
+    .install-banner-btn {
+        background: white;
+        color: black;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+
+    .install-banner-btn:active {
+        transform: scale(0.95);
+    }
+
+    .install-banner-close {
+        background: transparent;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .install-banner-close:active {
+        background: rgba(255, 255, 255, 0.1);
     }
 
 </style>
@@ -542,6 +661,21 @@
                 </div>
             </div>
         </div>
+
+        <!-- Install Banner (mobile only, first visit) -->
+        <div id="install-banner" style="display: none;">
+            <div class="install-banner-content">
+                <div class="install-banner-icon">📱</div>
+                <div class="install-banner-text">
+                    <div class="install-banner-title">Add to Home Screen to use Pause fullscreen</div>
+                    <div class="install-banner-instruction">Tap <span style="font-size: 18px;">📤</span> → "Add to Home Screen"</div>
+                </div>
+                <div class="install-banner-buttons">
+                    <button id="install-banner-dismiss" class="install-banner-btn">Got it</button>
+                    <button id="install-banner-close" class="install-banner-close">×</button>
+                </div>
+            </div>
+        </div>
     </div>
     
 
@@ -568,13 +702,11 @@
         { name: 'Amber', bg: '#FF9F1C', text: '#1a0f00' },
         { name: 'Dark', bg: '#2c2c2c', text: '#fff' },
         { name: 'Sunrise', bg: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%)', text: '#1a0f00' },
-        { name: 'Dusk', bg: '#FFA07A', text: '#2c1810' },
-        { name: 'Midnight', bg: 'linear-gradient(135deg, #0a1128 0%, #1a0a1f 100%)', text: '#ffffff' }
+        { name: 'Dusk', bg: '#FFA07A', text: '#2c1810' }
     ];
     
     const STYLE_YEARS = ['2001', '2004'];
     
-    const HAPTICS_OPTIONS = ['On', 'Off'];
     const ANIMATION_OPTIONS = ['On', 'Off'];
     
     let state = {
@@ -589,7 +721,6 @@
         tempColorIndex: 0, // Temporary storage for color during animation selection
         styleYear: '2001', // '2001' or '2004' - controls chassis aesthetic
         settingsView: 'main',
-        hapticsEnabled: true,
         animationEnabled: false,
         soundPresetIndex: 0,
         setupPresetIndex: 0,
@@ -732,9 +863,9 @@
         if (currentTheme.bg.includes('gradient')) {
             screen.style.background = currentTheme.bg;
             
-            // Apply animation if enabled and color supports it (Sunrise or Midnight)
+            // Apply animation if enabled and color supports it (only Sunrise now)
             const currentColorName = currentTheme.name;
-            const supportsAnimation = currentColorName === 'Sunrise' || currentColorName === 'Midnight';
+            const supportsAnimation = currentColorName === 'Sunrise';
             if (state.animationEnabled && supportsAnimation) {
                 screen.style.backgroundSize = '200% 200%';
                 screen.style.animation = 'gradientShift 8s ease infinite';
@@ -753,6 +884,7 @@
         mainValue.style.width = '';
         mainValue.style.flexDirection = '';
         mainValue.style.alignItems = '';
+        mainValue.style.overflowY = ''; // Reset overflow by default
 
         if (state.currentView === 'SESSION') {
             showSession();
@@ -774,8 +906,6 @@
             showSettingsColorAnimation();
         } else if (state.currentView === 'SETTINGS_ANIMATION') {
             showSettingsAnimation();
-        } else if (state.currentView === 'SETTINGS_HAPTICS') {
-            showSettingsHaptics();
         }
 
         if(state.isPlaying) visualizer.classList.add('playing');
@@ -870,17 +1000,18 @@
         
         const menuHTML = MODES.map((mode, i) => {
             const isSelected = i === state.modeIndex;
+            const isLast = i === MODES.length - 1;
             return `<div style="
                 height: 40px;
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
-                border-bottom: 1px solid rgba(0,0,0,0.1);
+                border-bottom: ${isLast ? 'none' : '1px solid rgba(0,0,0,0.1)'};
                 transition: all 0.1s ease;
                 text-transform: capitalize;
             ">${mode}</div>`;
@@ -893,9 +1024,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
 
     function showTimerPresets() {
@@ -909,17 +1040,18 @@
         
         const presetHTML = TIMER_PRESETS.map((preset, i) => {
             const isSelected = i === state.timerPresetIndex;
+            const isLast = i === TIMER_PRESETS.length - 1;
             return `<div style="
                 height: 40px;
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
-                border-bottom: 1px solid rgba(0,0,0,0.1);
+                border-bottom: ${isLast ? 'none' : '1px solid rgba(0,0,0,0.1)'};
                 transition: all 0.1s ease;
             ">${preset} Minutes</div>`;
         }).join('');
@@ -931,9 +1063,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
 
     function showTimerCountdown() {
@@ -970,6 +1102,7 @@
         
         const soundHTML = SOUNDS.map((sound, i) => {
             const isSelected = i === state.soundPresetIndex;
+            const isLast = i === SOUNDS.length - 1;
             const hoverBg = isDarkBg 
                 ? 'linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))' 
                 : 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))';
@@ -981,11 +1114,11 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? hoverBg : 'transparent'};
-                border-bottom: 1px solid ${borderColor};
+                border-bottom: ${isLast ? 'none' : `1px solid ${borderColor}`};
                 transition: all 0.1s ease;
                 text-transform: capitalize;
             ">${sound}</div>`;
@@ -998,9 +1131,11 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
+        mainValue.style.overflowY = 'auto';
+        mainValue.style.maxHeight = '100%';
     }
 
     function showSettings() {
@@ -1012,20 +1147,21 @@
         const middleContainer = document.querySelector('.ui-middle');
         middleContainer.style.justifyContent = 'flex-start';
         
-        const settingsItems = ['Theme', 'Color', 'Haptics'];
+        const settingsItems = ['Theme', 'Color'];
         const settingsHTML = settingsItems.map((item, i) => {
             const isSelected = i === state.setupPresetIndex;
+            const isLast = i === settingsItems.length - 1;
             return `<div style="
                 height: 40px;
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
-                border-bottom: 1px solid rgba(0,0,0,0.1);
+                border-bottom: ${isLast ? 'none' : '1px solid rgba(0,0,0,0.1)'};
                 transition: all 0.1s ease;
             ">${item}</div>`;
         }).join('');
@@ -1037,9 +1173,11 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
+        mainValue.style.overflowY = 'auto';
+        mainValue.style.maxHeight = '100%';
     }
     
     function showSettingsTheme() {
@@ -1060,7 +1198,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
@@ -1076,9 +1214,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
     
     function showSettingsColor() {
@@ -1092,10 +1230,11 @@
         
         // Check if we're on a dark background for better hover visibility
         const currentColor = COLORS[state.setupPresetIndex];
-        const isDarkBg = currentColor.bg.includes('#0a1128') || currentColor.bg.includes('#1a0a1f') || currentColor.bg.includes('#2c2c2c');
+        const isDarkBg = currentColor.bg.includes('#2c2c2c');
         
         const colorHTML = COLORS.map((color, i) => {
             const isSelected = i === state.setupPresetIndex;
+            const isLast = i === COLORS.length - 1;
             const hoverBg = isDarkBg 
                 ? 'linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))' 
                 : 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))';
@@ -1107,11 +1246,11 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? hoverBg : 'transparent'};
-                border-bottom: 1px solid ${borderColor};
+                border-bottom: ${isLast ? 'none' : `1px solid ${borderColor}`};
                 transition: all 0.1s ease;
             ">${color.name}</div>`;
         }).join('');
@@ -1123,9 +1262,11 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
+        mainValue.style.overflowY = 'auto';
+        mainValue.style.maxHeight = '100%';
     }
     
     function showSettingsAnimation() {
@@ -1145,7 +1286,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
@@ -1161,9 +1302,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
     
     function showSettingsColorAnimation() {
@@ -1183,7 +1324,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
@@ -1199,9 +1340,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
     
     function showSettings2004() {
@@ -1222,7 +1363,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
@@ -1238,9 +1379,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
     
     function showSettingsThemeYear() {
@@ -1261,7 +1402,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
@@ -1278,9 +1419,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
     
     function showSettings2004Backgrounds() {
@@ -1309,7 +1450,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? hoverBg : 'transparent'};
@@ -1325,9 +1466,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
     
     function showSettings2004Animation() {
@@ -1347,7 +1488,7 @@
                 align-items: center;
                 justify-content: flex-start;
                 width: 100%;
-                padding: 0 16px;
+                padding: 0 24px;
                 font-size: 18px;
                 font-weight: 500;
                 background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
@@ -1363,47 +1504,9 @@
         mainValue.style.justifyContent = 'flex-start';
         mainValue.style.fontSize = 'initial';
         mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
-    }
-    
-    function showSettingsHaptics() {
-        modeText.innerText = 'HAPTICS';
-        mainLabel.innerText = '';
-        mainUnit.innerText = '';
-        
-        // Reset to top alignment for lists
-        const middleContainer = document.querySelector('.ui-middle');
-        middleContainer.style.justifyContent = 'flex-start';
-        
-        const hapticsHTML = HAPTICS_OPTIONS.map((option, i) => {
-            const isSelected = i === state.setupPresetIndex;
-            return `<div style="
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                width: 100%;
-                padding: 0 16px;
-                font-size: 18px;
-                font-weight: 500;
-                background: ${isSelected ? 'linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.12))' : 'transparent'};
-                border-bottom: 1px solid rgba(0,0,0,0.1);
-                transition: all 0.1s ease;
-            ">${option}</div>`;
-        }).join('');
-        
-        mainValue.innerHTML = hapticsHTML;
-        mainValue.style.display = 'flex';
-        mainValue.style.flexDirection = 'column';
-        mainValue.style.alignItems = 'flex-start';
-        mainValue.style.justifyContent = 'flex-start';
-        mainValue.style.fontSize = 'initial';
-        mainValue.style.padding = '0';
-        mainValue.style.marginLeft = '-20px';
-        mainValue.style.marginRight = '-20px';
-        mainValue.style.width = 'calc(100% + 40px)';
+        mainValue.style.marginLeft = '-24px';
+        mainValue.style.marginRight = '-24px';
+        mainValue.style.width = 'calc(100% + 48px)';
     }
 
     function rotateKnob(delta) {
@@ -1425,7 +1528,16 @@
         if(steps === 0) return;
         const direction = steps > 0 ? 1 : -1;
 
-        if (state.currentView === 'MENU') {
+        if (state.currentView === 'SESSION') {
+            // Allow changing timer duration on home screen when countdown is NOT active
+            if (!state.countdownActive) {
+                state.timerPresetIndex += direction;
+                if(state.timerPresetIndex < 0) state.timerPresetIndex = TIMER_PRESETS.length - 1;
+                if(state.timerPresetIndex >= TIMER_PRESETS.length) state.timerPresetIndex = 0;
+                state.timer = TIMER_PRESETS[state.timerPresetIndex];
+            }
+            // If countdown is active, dial does nothing
+        } else if (state.currentView === 'MENU') {
             state.modeIndex += direction;
             if(state.modeIndex < 0) state.modeIndex = MODES.length - 1;
             if(state.modeIndex >= MODES.length) state.modeIndex = 0;
@@ -1440,10 +1552,10 @@
             if(state.soundPresetIndex < 0) state.soundPresetIndex = SOUNDS.length - 1;
             if(state.soundPresetIndex >= SOUNDS.length) state.soundPresetIndex = 0;
         } else if (state.currentView === 'SETTINGS') {
-            // Theme, Color, Haptics (3 items)
+            // Theme, Color (2 items)
             state.setupPresetIndex += direction;
-            if(state.setupPresetIndex < 0) state.setupPresetIndex = 2;
-            if(state.setupPresetIndex > 2) state.setupPresetIndex = 0;
+            if(state.setupPresetIndex < 0) state.setupPresetIndex = 1;
+            if(state.setupPresetIndex > 1) state.setupPresetIndex = 0;
         } else if (state.currentView === 'SETTINGS_THEME') {
             // 2001, 2004 (2 items)
             state.setupPresetIndex += direction;
@@ -1472,11 +1584,6 @@
         }
         
         updateDisplay();
-        triggerHaptic();
-    }
-
-    function triggerHaptic() {
-        if (state.hapticsEnabled && navigator.vibrate) navigator.vibrate(5);
     }
 
     
@@ -1566,7 +1673,6 @@
                 if (pointerDownInTopArea) {
                     state.currentView = 'MENU';
                     updateDisplay();
-                    triggerHaptic();
                     isDragging = false;
                     lastAngle = null;
                     pointerDownPos = null;
@@ -1587,48 +1693,35 @@
                     state.isPlaying = false;
                     clearInterval(state.countdownInterval);
                     updateDisplay();
-                    triggerHaptic();
                 } else if (state.currentView === 'SOUND' && tapX < centerX) {
                     // Left side tap on Sound list - return to MENU
                     state.currentView = 'MENU';
                     updateDisplay();
-                    triggerHaptic();
                 } else if (state.currentView === 'SETTINGS' && tapX < centerX) {
                     // Left side tap on Settings - return to MENU
                     state.currentView = 'MENU';
                     state.setupPresetIndex = 0;
                     updateDisplay();
-                    triggerHaptic();
                 } else if (state.currentView === 'SETTINGS_THEME' && tapX < centerX) {
                     // Left side tap on Theme - return to SETTINGS
                     state.currentView = 'SETTINGS';
                     state.setupPresetIndex = 0;
                     updateDisplay();
-                    triggerHaptic();
                 } else if (state.currentView === 'SETTINGS_COLOR' && tapX < centerX) {
                     // Left side tap on Color - return to SETTINGS
                     state.currentView = 'SETTINGS';
                     state.setupPresetIndex = 1;
                     updateDisplay();
-                    triggerHaptic();
                 } else if (state.currentView === 'SETTINGS_COLOR_ANIMATION' && tapX < centerX) {
                     // Left side tap on Color Animation - return to SETTINGS_COLOR
                     state.currentView = 'SETTINGS_COLOR';
                     state.setupPresetIndex = state.tempColorIndex;
                     updateDisplay();
-                    triggerHaptic();
                 } else if (state.currentView === 'SETTINGS_ANIMATION' && tapX < centerX) {
                     // Left side tap on Animation - return to SETTINGS
                     state.currentView = 'SETTINGS';
                     state.setupPresetIndex = 1;
                     updateDisplay();
-                    triggerHaptic();
-                } else if (state.currentView === 'SETTINGS_HAPTICS' && tapX < centerX) {
-                    // Left side tap on Haptics - return to SETTINGS
-                    state.currentView = 'SETTINGS';
-                    state.setupPresetIndex = 2; // Now index 2, not 3
-                    updateDisplay();
-                    triggerHaptic();
                 }
             }
         }
@@ -1726,7 +1819,7 @@
             
             state.currentView = 'MENU';
         } else if (state.currentView === 'SETTINGS') {
-            // Navigate into Theme, Color, or Haptics
+            // Navigate into Theme or Color
             if (state.setupPresetIndex === 0) {
                 // Theme
                 state.currentView = 'SETTINGS_THEME';
@@ -1735,10 +1828,6 @@
                 // Color
                 state.currentView = 'SETTINGS_COLOR';
                 state.setupPresetIndex = state.colorIndex;
-            } else if (state.setupPresetIndex === 2) {
-                // Haptics
-                state.currentView = 'SETTINGS_HAPTICS';
-                state.setupPresetIndex = state.hapticsEnabled ? 0 : 1;
             }
         } else if (state.currentView === 'SETTINGS_THEME') {
             // Select style year (2001 or 2004)
@@ -1748,7 +1837,7 @@
         } else if (state.currentView === 'SETTINGS_COLOR') {
             // Check if selected color supports animation
             const selectedColor = COLORS[state.setupPresetIndex];
-            const hasAnimation = selectedColor.name === 'Sunrise' || selectedColor.name === 'Midnight';
+            const hasAnimation = selectedColor.name === 'Sunrise';
             
             if (hasAnimation) {
                 // Go to animation submenu for this color
@@ -1773,19 +1862,54 @@
             state.animationEnabled = state.setupPresetIndex === 0;
             state.currentView = 'SETTINGS';
             state.setupPresetIndex = 1; // Return to Color option
-        } else if (state.currentView === 'SETTINGS_HAPTICS') {
-            // Toggle haptics on/off
-            state.hapticsEnabled = state.setupPresetIndex === 0;
-            state.currentView = 'SETTINGS';
-            state.setupPresetIndex = 2; // Return to Haptics option (now index 2, not 3)
         }
         
         updateDisplay();
-        triggerHaptic();
     });
     
 
 
+
+    // Install Banner Logic (Mobile only, first visit)
+    function showInstallBanner() {
+        // Check if mobile device
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        
+        // Check if already dismissed
+        const bannerDismissed = localStorage.getItem('pauseInstallBannerDismissed');
+        
+        // Show banner if mobile and not dismissed
+        if (isMobile && !bannerDismissed) {
+            const banner = document.getElementById('install-banner');
+            if (banner) {
+                banner.style.display = 'block';
+            }
+        }
+    }
+
+    function hideInstallBanner() {
+        const banner = document.getElementById('install-banner');
+        if (banner) {
+            banner.style.display = 'none';
+            // Remember dismissal forever
+            localStorage.setItem('pauseInstallBannerDismissed', 'true');
+        }
+    }
+
+    // Add event listeners for banner buttons
+    const dismissBtn = document.getElementById('install-banner-dismiss');
+    const closeBtn = document.getElementById('install-banner-close');
+    
+    if (dismissBtn) {
+        dismissBtn.addEventListener('click', hideInstallBanner);
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hideInstallBanner);
+    }
+
+    // Show banner on load (if conditions met)
+    showInstallBanner();
 
 
     updateDisplay();
